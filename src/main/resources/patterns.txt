@@ -1,0 +1,78 @@
+/* =========================================================================== */
+/* ======================  Queries  ========================================== */
+/* =========================================================================== */
+
+
+/* ============  External Dependency Pattern ============ */
+/* Safety Pattern matches a !pc if no query is SAT for that !pc */
+
+// HACK: We are not changing the name here so that HoRSTIfy can still process the output
+
+/* ============  Reentrancy Pattern ============ */
+/* Violation Pattern matches a !pc if the query is UNSAT  */
+query reentrancyViolation for (!pc1:int) in pcsForOpcode(CALL), (!pc2:int) in pcsForOpcode(SSTORE)
+	MayFollow{!pc1}(!pc2);
+
+/* ============  Restricted Write Pattern ============ */
+/* Violation Pattern matches a !pc if both queries are UNSAT for that !pc */
+query restrictedWriteViolationV for (!pc:int) in pcsForOpcode(SSTORE), (!var : int) in getStackInputs(!pc,0)
+    VarMayDependOn{}(!var, @I(CALLER));
+
+query restrictedWriteViolationI for (!pc:int) in pcsForOpcode(SSTORE)
+    InstMayDependOn{!pc}(@I(CALLER));
+
+/* ============  Timestamp Dependency Pattern ============ */
+/* Safety Pattern matches a !pc if no query is SAT for that !pc */
+query timestampDependSafetyVCall for (!pc:int) in pcsForOpcode(CALL), (!s : int) in interval(0,7), (!var : int) in getStackInputs(!pc,!s)
+    VarMayDependOn{}(!var, @I(TIMESTAMP));
+
+query timestampDependSafetyICall for (!pc:int) in pcsForOpcode(CALL)
+    InstMayDependOn{!pc}(@I(TIMESTAMP));
+
+query timestampDependSafetyVStaticCall for (!pc:int) in pcsForOpcode(STATICCALL), (!s : int) in interval(0,6), (!var : int) in getStackInputs(!pc,!s)
+    VarMayDependOn{}(!var, @I(TIMESTAMP));
+
+query timestampDependSafetyIStaticCall for (!pc:int) in pcsForOpcode(STATICCALL)
+    InstMayDependOn{!pc}(@I(TIMESTAMP));
+
+query timestampDependSafetyVCreate for (!pc:int) in pcsForOpcode(CREATE), (!s : int) in interval(0,3), (!var : int) in getStackInputs(!pc,!s)
+    VarMayDependOn{}(!var, @I(TIMESTAMP));
+
+query timestampDependSafetyICreate for (!pc:int) in pcsForOpcode(CREATE)
+    InstMayDependOn{!pc}(@I(TIMESTAMP));
+
+query timestampDependSafetyVCreate2 for (!pc:int) in pcsForOpcode(CREATE2), (!s : int) in interval(0,4), (!var : int) in getStackInputs(!pc,!s)
+    VarMayDependOn{}(!var, @I(TIMESTAMP));
+
+query timestampDependSafetyICreate2 for (!pc:int) in pcsForOpcode(CREATE2)
+    InstMayDependOn{!pc}(@I(TIMESTAMP));
+
+/* ============  Transaction Ordering Dependency Pattern ============ */
+/* Safety Pattern matches a !pc if both queries are UNSAT for that !pc */
+query todSafetyA for (!pc:int) in pcsForOpcode(CALL), (!var : int) in getStackInputs(!pc,2 /* Amount */ )
+    VarMayDependOn{}(!var, @I(SLOAD));
+
+query todSafetyB for (!pc:int) in pcsForOpcode(CALL), (!var : int) in getStackInputs(!pc,2 /* Amount */ )
+    VarMayDependOn{}(!var, @I(BALANCE));
+
+
+
+/* ============  Validated Argument Pattern ============ */
+/* Violation Pattern matches a !pc1 if there is no !pc2 that SAT both queries */
+
+query validatedArgF for (!pc1:int) in pcsForOpcode(SSTORE), (!pc2:int) in pcsForOpcode(JUMPI)
+    MayFollow{!pc1}(!pc2);
+
+query validatedArgV for (!pc1:int) in pcsForOpcode(SSTORE), (!pc2:int) in pcsForOpcode(JUMPI), (!var : int) in getStackInputs(!pc2,1)
+    VarMayDependOn{}(!var, @I(CALLDATACOPY));
+
+
+
+/* ============  Handled Exception Pattern ============ */
+/* Violation Pattern matches a !pc1 if for all !pc2 at least one query does not match */
+
+query handledExceptionF for (!pc1:int) in pcsForOpcode(CALL), (!pc2:int) in pcsForOpcode(JUMPI)
+    MayFollow{!pc1}(!pc2);
+
+query handledExceptionV for (!pc1:int) in pcsForOpcode(CALL), (!pc2:int) in pcsForOpcode(JUMPI), (!out : int) in getStackOutput(!pc1), (!var : int) in getStackInputs(!pc2, 1 ) // 1-> Cond
+    VarMayDependOn{}(!var, @V(!out));

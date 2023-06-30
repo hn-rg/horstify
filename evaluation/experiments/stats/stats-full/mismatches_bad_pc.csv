@@ -1,0 +1,5 @@
+pc,contract,type,property,tool_2,version_2
+771.0,0x2f81a082e11ee3ab3b063bb9605affc8e3121926,Violation,RestrictedWrite,horstify,/home/claras/horstify/src/main/resources/abstract-semantics-old-improved-env.txt
+400.0,0x5be9887d5b4336cb762a9d73335991a6ff8ce981,Violation,RestrictedWrite,horstify,/home/claras/horstify/src/main/resources/abstract-semantics-old-improved-env.txt
+365.0,0x02e01e9a73ed2cb24b32628c935256e455b0a078,Violation,RestrictedWrite,horstify,/home/claras/horstify/src/main/resources/abstract-semantics-old-improved-env.txt
+582.0,0x4eecf99d543b278106ac0c0e8ffe616f2137f10a,Violation,RestrictedWrite,horstify,/home/claras/horstify/src/main/resources/abstract-semantics-old-improved-env.txt

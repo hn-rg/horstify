@@ -1,0 +1,3 @@
+tool_1,contract,property,type,matches_1,count_1,tool_2,matches_2,count_2
+securify,0x02e01e9a73ed2cb24b32628c935256e455b0a078,RestrictedWrite,Violation,[],0.0,horstify,[365.0],1.0
+securify,0x2f81a082e11ee3ab3b063bb9605affc8e3121926,RestrictedWrite,Violation,[],0.0,horstify,[771.0],1.0

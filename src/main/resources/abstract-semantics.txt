@@ -1,0 +1,1902 @@
+/* ============  Selector Functions ============ */
+sel pcs: unit -> [int]; // gives all pcs of the contract
+sel pcsForOpcode: int -> [int]; // gives all pcs for a certain opcode
+
+sel nextForPc: int -> [int]; // gives the next (temporary) pc(s) after the given one
+
+sel getStackInputs: int*int -> [int];   // returns stack input variables for given pc and position
+sel getStackOutput: int -> [int];  // returns stack output variables for given pc
+
+// Control Dependence Information
+sel isControlledBy: int -> [int]; // returns program counters that control a given pc
+
+// Preprocessing for Variable
+sel isVarConst: unit -> [int * int];
+sel notVarConst: unit -> [int];
+
+// Auxiliary function
+sel interval: int*int -> [int];
+sel provideMemInterval: int*int ->  [int];
+
+/* ============ Opcodes ============= */
+const NUMOPCODES := 256;
+const MAXSTACK := 7;
+
+const STOP := 0;
+const ADD := 1;
+const AND := 22;
+const LE := 16;
+
+const ARITH := 30;
+
+const EXP := 10;
+const SHA3 := 32;
+
+const ADDRESS := 48;
+const BALANCE := 49;
+const ORIGIN := 50;
+const CALLER := 51;
+const CALLVALUE := 52;
+const CALLDATALOAD := 53;
+const CALLDATASIZE := 54;
+const CALLDATACOPY := 55;
+const CODESIZE := 56;
+const CODECOPY := 57;
+const GASPRIZE := 58;
+const EXTCODESIZE := 59;
+const EXTCODECOPY := 60;
+const RETURNDATASIZE := 61;
+const RETURNDATACOPY := 62;
+const EXTCODEHASH := 63;
+const BLOCKHASH := 64;
+const COINBASE := 65;
+const TIMESTAMP := 66;
+const NUMBER := 67;
+const DIFFICULTY := 68;
+const GASLIMIT := 69;
+const CHAINID := 70;
+const SELFBALANCE := 71;
+const BASEFEE := 72;
+
+const MLOAD := 81;
+const MSTORE := 82;
+const MSTORE8 := 83;
+const SSTORE := 85;
+const SLOAD := 84;
+const JUMP := 86;
+const JUMPI := 87;
+const PC := 88;
+const MSIZE := 89;
+const GAS := 90;
+const JUMPDEST := 91;
+
+const TMPLABEL := 92;
+const TMPJUMP := 93;
+const TMPASSIGN := 94;
+const TMPJUMPI := 95;
+
+const ASSIGN := 96;
+const LOG := 160;
+
+const CREATE := 240;
+const CALL := 241;
+const CALLCODE := 242;
+const RETURN := 243;
+const DELEGATECALL := 244;
+const CREATE2 := 245;
+
+const STATICCALL := 250;
+const REVERT := 253;
+const THROW := 254;
+const SELFDESTRUCT := 255;
+const TEST := 17;
+
+
+/* ============  Abstract Domain and abstract operations ============ */
+eqtype Loc := @L<int> | @T;         // Concrete location or unknown
+eqtype Tag := @V<int> | @I<int>;
+
+/* ============  Input Predicates ============ */
+pred Follow{int}: int;
+
+pred VarVar{int}: int * int; // VarVar{pc}(x, y) indicates that variable y influences variable x at pc 
+pred VarMem{int}: int * Loc; // VarMem{pc}(x, l) indicates that memory location l influences variable x at pc
+pred MemVar{int}: Loc * int; // MemVar{pc}(l, x) indicates that variable x influences memory location l at pc
+pred MemMem{int}: Loc * Loc * Loc; // Mprop(loc, lo1, ls1) indicates that the memory fragment given by lo1 and ls1, influences (writes) the memory location loc
+pred VarStore{int}: int * Loc; // would rather correspond to VarStor
+pred StoreVar{int}: Loc * int; // would rather correspond to StorVar
+pred MSizeWrite{int}: bool; // MsizeWrite{pc}() indicates that Msize is written at pc
+pred MSizeVar{int}: int; // MSizeVar{pc}(x) indicates that stack variable x at pc influences msize
+pred GasVar{int}: int; // GasVar{pc}(x) indicates that the stack variable x at pc influences gas
+pred GasMsize{int}: bool; // GasMsize{pc}() indicates that Msize at pc influences gas
+pred GasMem{int}: Loc; // GasMem{pc}(l) indicates that memory location l at pc influences gas
+pred GasStor{int}: Loc; // GasStpr{pc}(l) inficates that storage location l at pc influences gas
+pred GasExternal{int}: bool; //GasExternal{pc} indicates that at pc  the external environment influences gas 
+pred ExternalVar{int}: int; // ExternalVar{pc}(x) indicates that at pc variable x influences the external environment 
+pred ExternalGas{int}: bool; // ExternalGas{pc}() indicates that at pc the gas influences the external environment
+pred ExternalStore{int}: Loc; // ExternalStore{pc}(l) indicates that at pc the storage location l influences the external environment
+pred ExternalMem{int}: Loc;  // ExternalMem{pc}(l) indicates that at pc the memory location l influences the external environment
+pred ExternalMSize{int}: bool; //ExternalMSize{pc}(l) indicates that at pc the msize influences the external environment (probably not needed)
+pred ExternalWrite{int}: bool; //ExternalWrite{pc}() indicates that External environment is written at pc (included in Def Set)
+pred MemExternal{int}: Loc; // MemExternal{int}(l) indicates that the memory location l is influenced by the external environment
+pred MemGas{int}: Loc; // MemGas{int}(l) indicates that memory location l is influenced by the gas
+pred MemMsize{int}: Loc;  // MemMsize{pc}(l) indicates that memory location l is influenced by the msize
+pred MemStore{int}: Loc * Loc; // MemStore{pc}(l1, l2) indicates that memory location l1 depends on storage location l2  (where @T indicates all storage locations)
+pred VarExternal{int}: int; // VarExternal{int}(x) indicates that the variable x is influenced by the external environment
+pred VarGas{int}: int; // VarGas{int}(x) indicates that variable x is influenced by the gas
+pred VarMsize{int}: int;  // VarMsize{int}(x) indicates that variable x is influenced by the msize
+
+// predicates that allow to immediate insert direct dependencies on TAGS 
+pred VarSource{int} : int * Tag; // VarSource{pc}(x, e) means that at pc the variable x is dependant on global static environment variable e
+pred ExternalSource{int}: Tag; // ExternalSource{pc}(e) means that at pc the external environment is dependant on global static environment variable e
+pred GasSource{int}: Tag; // GasSource{pc}(e) means that at pc the gas is dependant on global static environment variable e
+pred MemSource{int}: Loc * Tag; // MemSource{pc}(l, e) means that at pc memory position l is dependant on global static environment variable e
+
+// INFO: New control dependence instead of taint and join
+pred Controls{int} : int * int; // Input Label with predicate controls another label: Controls{pc1}(pc2, x) means that pc1 is controlled by branch statement at pc2 with condition variable x
+pred MayControls{int} : int * int; // Transitive Controls Label with predicate controls another label: MayControls{pc1}(pc2, x) means that pc1 is transitively controlled by branch statement at pc2 with condition variable x
+
+pred VarConst{} : int * int;
+pred NotVarConst{} : int;
+
+/* ============  Fixed-point Predicates ============ */
+pred NoReassignMem{} : int;
+pred NoReassignStor{} : int;
+
+pred MayFollow{int} : int;
+pred VarMayDependOn{} : int * Tag;
+pred InstMayDependOn{int} : Tag;
+pred MemMayDependOn{int} : Loc * Tag;
+pred StorMayDependOn{int} : Loc * Tag;
+pred GasMayDepOn{int}: Tag; 
+pred MSizeMayDepOn{int}: Tag; 
+pred ExternalMayDepOn{int}: Tag;
+
+/* ============= Control Flow rules =============== */
+
+rule followsInput :=        // 2
+    for (!pc: int) in pcs(), (!next : int) in nextForPc(!pc)
+    clause // Next + JUMP(I) case
+        true
+        => Follow{!pc}(!next);
+
+rule controlInput :=    // 17.1
+    for (!pc: int) in pcs(), (!con: int) in isControlledBy (!pc), (!var : int) in getStackInputs(!con, 0)
+    clause
+        true
+        => Controls{!pc}(!con, !var);
+
+rule varConst :=
+    for (!var1 : int, !cons : int) in isVarConst()
+    clause
+        true
+        => VarConst{}(!var1, !cons);
+
+ rule varNotConst :=
+     for  (!var : int) in notVarConst()
+     clause
+         true
+         => NotVarConst(!var);
+
+
+/* ============  Fixed-point Rules ============ */
+
+rule cfg :=     // 3
+    for (!pc1: int) in pcs(), (!pc2 : int) in pcs()
+    clause      // 3.1
+        Follow{!pc1}(!pc2)
+        => MayFollow{!pc1}(!pc2),
+    clause [?pc3:int]     // 3.2
+        MayFollow{!pc1}(!pc2),
+        Follow{!pc2}(?pc3)
+        => MayFollow{!pc1} (?pc3);
+
+rule varMayTransitive :=    // 4 / 6 (.1)
+    for (!pc: int) in pcs()
+    clause [?var :int, ?tag : Tag]      // 6.1
+        VarSource{!pc}(?var, ?tag)
+        => VarMayDependOn{}(?var, ?tag),
+    clause [?var1 :int, ?var2 : int, ?tag : Tag]      // 4.1
+        VarMayDependOn{}(?var1, ?tag),
+        VarVar{!pc}(?var2, ?var1)
+        => VarMayDependOn{}(?var2, ?tag);
+
+rule varMayTaint :=         // 4
+    for (!pc: int) in pcs()
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag] // 4.3*
+        VarSource{!pc}(?var1, ?taga), // Important: VarSource is here only used to indicate the variable (?var1) that is written at !pc (it's dependencies don't matter)
+        MayControls{!pc}(?pca, ?var2),
+        VarMayDependOn{}(?var2, ?tag)
+        => VarMayDependOn{}(?var1, ?tag),
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?vara : int, ?tag : Tag] // 4.2
+        VarVar{!pc}(?var1, ?vara), // Note: this rule is actually redundant w.r.t to the rule above, since for every pc that assigns a variable this variable is also included in the VarSource predicate
+        MayControls{!pc}(?pca, ?var2),
+        VarMayDependOn{}(?var2, ?tag)
+        => VarMayDependOn{}(?var1, ?tag);
+
+rule memMay :=      // 9
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?loc: Loc, ?tag: Tag]
+        MemSource{!pc2}(?loc, ?tag)
+        => MemMayDependOn{!pc2} (?loc, ?tag),
+    clause [?loc : Loc, ?var: int, ?tag : Tag]      // 9.1
+        MemVar{!pc2}(?loc, ?var),
+        VarMayDependOn{}(?var, ?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?lo1:Loc, ?ls1:Loc, ?lo2: Loc, ?ls2: Loc, ?tag: Tag, ?loc1: Loc, ?loc2: Loc, ?loc: Loc] // case source + target memory fragment unknown
+        MemMem{!pc2}(?loc, ?lo1, ?ls1), // case: input fragment unknown
+        ?lo1 = @T, // note that ?lo1 = @T encodes that the interval is fully unknown (invariant ?lo1 != @T -> ?ls1 != @T)
+        MemMayDependOn{!pc1}(?loc1, ?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?lo1:Loc, ?ls1:Loc, ?lo2: Loc, ?ls2: Loc, ?tag: Tag, ?loc1: Loc, ?loc2: Loc, ?o1: int, ?s1: int, ?i: int, ?loc: Loc]  // case: source fragment known, target fragment unknown
+        MemMem{!pc2}(?loc, ?lo1, ?ls1),
+        ?lo1 = @L(?o1), // case: memory fragment to be read is known
+        ?ls1 = @L(?s1),
+        ?i >= ?o1, 
+        ?i < ?o1 + ?s1, 
+        MemMayDependOn{!pc1}(@L(?i), ?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?lo1:Loc, ?ls1:Loc, ?lo2: Loc, ?ls2: Loc, ?tag: Tag, ?loc1: Loc, ?loc2: Loc, ?o1: int, ?s1: int, ?i: int, ?loc: Loc]  // case: source fragment known, target fragment unknown
+        MemMem{!pc2}(?loc, ?lo1, ?ls1),
+        ?lo1 = @L(?o1), // case: memory fragment to be read is known
+        ?ls1 = @L(?s1),
+        MemMayDependOn{!pc1}(@T, ?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?loc : Loc, ?tag : Tag]                 // 9.2
+        MemMayDependOn{!pc1}(?loc, ?tag),
+        NoReassignMem{}(!pc2) // NoReassign indicates that there is no reassignment at !pc2 Important: This means in particular that there is no (direct) dependency between the old and the new memory value.
+        // This only holds for MStore, because even if CALL writes the return data into the memory this may not necessarily reassign (e.g., if the provided return data is too short)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?loc1 : Loc, ?loc2: Loc, ?tag : Tag, ?var: int]       // 9.2 // memory positions that are not rewritten are propagated
+        MemMayDependOn{!pc1}(?loc1, ?tag),
+        MemVar{!pc2}(?loc2, ?var),
+        ~ (?loc1 = ?loc2)
+        => MemMayDependOn{!pc2}(?loc1, ?tag),
+    clause [?tag: Tag]             // 9.2
+        Follow{!pc1}(!pc2), // The @T memory is always propagated (since it is never fully overwritten)
+        MemMayDependOn{!pc1}(@T, ?tag)
+        => MemMayDependOn{!pc2}(@T, ?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        MemGas{!pc2}(?loc), 
+        GasMayDepOn{!pc1}(?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        MemMsize{!pc2}(?loc), 
+        MSizeMayDepOn{!pc1}(?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        MemExternal{!pc2}(?loc), 
+        ExternalMayDepOn{!pc1}(?tag)
+        => MemMayDependOn{!pc2}(?loc, ?tag),
+    clause [?tag: Tag, ?loc1: Loc, ?loc2: Loc] // this case may happen during the call: memory location may depend on a storage location (this will actually always be @T)
+        MemStore{!pc2}(?loc1, @T), // MemStore{pc}(l1, l2) indicates that that at pc memory location l1 is influenced by storage location l2 
+        StorMayDependOn{!pc1}(?loc2, ?tag)
+        => MemMayDependOn{!pc2}(?loc1, ?tag),
+    clause [?tag: Tag, ?loc1: Loc, ?i: int] // this case may happen during the call: memory location may depend on a storage location (this will actually always be @T)
+        MemStore{!pc2}(?loc1, @L(?i)), // MemStore{pc}(l1, l2) indicates that that at pc memory location l1 is influenced by storage location l2 
+        StorMayDependOn{!pc1}(@L(?i), ?tag)
+        => MemMayDependOn{!pc2}(?loc1, ?tag);
+
+rule memMayTaint := 
+    for (!pc: int) in pcs() // We make sure that whenever memory is written (Mstore or Mprop) also control dependence is considered 
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag, ?loc: Loc] 
+        MemVar{!pc}(?loc, ?var1), // note that MemVar here is sufficient because whenever memory is written, it is also influenced by the argument variables on the stack -> So there will be an entry in MemVar 
+        MayControls{!pc}(?pca, ?var2),
+        VarMayDependOn{}(?var2, ?tag)
+        => MemMayDependOn{!pc}(?loc, ?tag);
+
+
+rule noReassignMem :=         // 8.1 //
+    for (!opc : int) in interval(0, 256), (!pc : int) in pcsForOpcode(!opc)
+    clause
+        ~(!opc = MSTORE),
+        ~(!opc = CODECOPY),
+        ~(!opc = CALLDATACOPY),
+        ~(!opc = EXTCODECOPY)
+        => NoReassignMem{}(!pc);
+
+
+rule varSourceMem :=           // 11
+    for (!pc : int) in pcs()
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.1
+        // known to known
+        VarMem{!pc}(?var, ?loc),
+       ~(?loc = @T),
+        MemMayDependOn{!pc}(?loc, ?tag)
+        => VarSource{!pc}(?var, ?tag),
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.3
+        // unknown to known
+        VarMem{!pc}(?var, ?loc),
+        ~(?loc = @T),
+        MemMayDependOn{!pc}(@T, ?tag)
+        => VarSource{!pc}(?var, ?tag),
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.2
+        // everything to unknown
+        VarMem{!pc}(?var, @T),
+        MemMayDependOn{!pc}(?loc, ?tag)
+        => VarSource{!pc}(?var, ?tag);
+
+// transitive closure for StorMayDependOn
+rule storMay :=      // 9
+    for (!pc1: int) in pcs(), (!pc2: int) in pcs()
+    clause [?loc : Loc, ?var: int, ?tag : Tag]      // 9.1
+        StoreVar{!pc1}(?loc, ?var),
+        VarMayDependOn{}(?var, ?tag)
+        => StorMayDependOn{!pc1}(?loc, ?tag),
+    clause [?loc : Loc, ?tag : Tag]                 // 9.2
+        Follow{!pc1}(!pc2),
+        StorMayDependOn{!pc1}(?loc, ?tag),
+        NoReassignStor{}(!pc2)
+        => StorMayDependOn{!pc2}(?loc, ?tag),
+    clause [?loc1 : Loc, ?loc2: Loc, ?tag : Tag, ?var: int]       // 9.2
+        Follow{!pc1}(!pc2),
+        StorMayDependOn{!pc1}(?loc1, ?tag),
+        StoreVar{!pc2}(?loc2, ?var),
+        ~ (?loc1 = ?loc2)
+        => StorMayDependOn{!pc2}(?loc1, ?tag),
+    clause [?tag : Tag]             // 9.2
+        Follow{!pc1}(!pc2),
+        StorMayDependOn{!pc1}(@T, ?tag)
+        => StorMayDependOn{!pc2}(@T, ?tag); 
+
+rule storMayTaint := 
+    for (!pc: int) in pcs()
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag, ?loc: Loc] 
+        StoreVar{!pc}(?loc, ?var1), // note that StoreVar here is sufficient because whenever storage is written (only in SSTORE), it is also influenced by the argument variables on the stack -> So there will be an entry in StoreVar
+        MayControls{!pc}(?pca, ?var2),
+        VarMayDependOn{}(?var2, ?tag)
+        => StorMayDependOn{!pc}(?loc, ?tag);
+
+
+rule noReassignStor1 :=         // 8.1
+    for (!opc : int) in interval(0, SSTORE), (!pc : int) in pcsForOpcode(!opc)
+    clause
+        true
+        => NoReassignStor{}(!pc);
+
+rule noReassignStor2 :=         // 8.1
+    for (!opc : int) in interval(SSTORE + 1, NUMOPCODES), (!pc : int) in pcsForOpcode(!opc)
+    clause
+        true
+        => NoReassignStor{}(!pc);
+
+rule varSourceStor :=           // 11
+    for (!pc : int) in pcs()
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.1
+        // known to known
+        VarStore{!pc}(?var, ?loc),
+       ~(?loc = @T),
+        StorMayDependOn{!pc}(?loc, ?tag)
+        => VarSource{!pc}(?var, ?tag),
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.3
+        // unknown to known
+        VarStore{!pc}(?var, ?loc),
+        ~(?loc = @T),
+        StorMayDependOn{!pc}(@T, ?tag)
+        => VarSource{!pc}(?var, ?tag),
+    clause [?loc : Loc, ?tag : Tag, ?var : int]     // 11.2
+        // everything to unknown
+        VarStore{!pc}(?var, @T),
+        StorMayDependOn{!pc}(?loc, ?tag)
+        => VarSource{!pc}(?var, ?tag);
+
+rule instMay :=         // 16
+    for (!pc : int) in pcs()
+    clause [?pca : int, ?var : int]             // 16.1
+        MayControls{!pc}(?pca, ?var)
+        => InstMayDependOn{!pc}(@V(?var)),
+    clause [?pca : int, ?var : int, ?tag : Tag] // 16.2
+        MayControls{!pc}(?pca, ?var),
+        VarMayDependOn{}(?var, ?tag)
+        => InstMayDependOn{!pc}(?tag);
+
+rule controls :=        // 17.2
+    for (!pc1: int) in pcs(), (!pc2: int) in pcs()
+    clause [?pc0:int, ?var :int]
+            Controls{!pc1}(?pc0,?var)
+            => MayControls{!pc1}(?pc0,?var),
+    clause [?pc0 : int, ?var:int, ?var2:int]
+        Controls{!pc1}(?pc0,?var),
+        MayControls{!pc2}(!pc1,?var2)
+        => MayControls{!pc2}(?pc0, ?var);
+
+/* ============  MSIZE + GAS Rules ============ */
+
+// MSize: technically MSize is written whenever storage is used. But Msize also always depends on the previous MSize, so we anyway need to propagate dependencies
+rule mSizePropagate := 
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag : Tag]
+        MSizeMayDepOn{!pc1}(?tag)
+        => MSizeMayDepOn{!pc2}(?tag);
+
+rule mSizeToVar := 
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?var : int, ?tag : Tag]
+        VarMsize{!pc2}(?var), // var depends on Msize at !pc2
+        MSizeMayDepOn{!pc1}(?tag)
+        => VarSource{!pc2}(?var, ?tag);
+
+rule mSizeTaint := 
+    for (!pc: int) in pcs()
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag, ?loc: Loc] 
+        MSizeWrite{!pc}(true), // indicates that MSize is written
+        MayControls{!pc}(?pca, ?var2),
+        VarMayDependOn{}(?var2, ?tag)
+        => MSizeMayDepOn{!pc}(?tag);
+
+rule msizeMay := 
+   for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag: Tag, ?var: int]
+        MSizeVar{!pc2}(?var), 
+        VarMayDependOn{}(?var, ?tag)
+        => MSizeMayDepOn{!pc2}(?tag);
+       
+//Gas: Similiar to Msize. Gas is written in every instruction, but always depends on the previous Gas value, so its dependencies need to be propagated
+rule gasPropagate :=
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag : Tag]
+        GasMayDepOn{!pc1}(?tag)
+        => GasMayDepOn{!pc2}(?tag);
+
+rule gasToVar := 
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?var : int, ?tag : Tag]
+        VarGas{!pc2}(?var),
+        GasMayDepOn{!pc1}(?tag)
+        => VarSource{!pc2}(?var, ?tag);
+
+rule gasTaint := 
+    for (!pc: int) in pcs()
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag, ?loc: Loc] 
+        MayControls{!pc}(?pca, ?var2), // since gas is written at every node, at each node it is dependent on the variables controlling that node
+        VarMayDependOn{}(?var2, ?tag)
+        => GasMayDepOn{!pc}(?tag);
+
+rule gasMay := 
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag: Tag]
+        GasMsize{!pc2}(true),
+        MSizeMayDepOn{!pc1}(?tag)
+        => GasMayDepOn{!pc2}(?tag), 
+    clause [?tag: Tag, ?var: int]
+        GasVar{!pc2}(?var),
+        VarMayDependOn{}(?var, ?tag)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasMem{!pc2}(?loc),
+        MemMayDependOn{!pc1}(?loc, ?tag), 
+        ~(?loc = @T)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasMem{!pc2}(?loc),
+        MemMayDependOn{!pc1}(@T, ?tag), 
+        ~(?loc = @T)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasMem{!pc2}(@T), // GasMem{!pc2}(@T) means that the gas can depend on "any" location => @T and all concrete ones
+        MemMayDependOn{!pc1}(?loc, ?tag) 
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasStor{!pc2}(?loc),
+        StorMayDependOn{!pc1}(?loc, ?tag), 
+        ~(?loc = @T)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasStor{!pc2}(?loc),
+        StorMayDependOn{!pc1}(@T, ?tag), 
+        ~(?loc = @T)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        GasStor{!pc2}(@T), // GasStor{!pc2}(@T) means that the gas can depend on "any" location => @T and all concrete ones
+        StorMayDependOn{!pc1}(?loc, ?tag) 
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag]
+        GasExternal{!pc2}(true),
+        ExternalMayDepOn{!pc1}(?tag)
+        => GasMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag]
+        GasSource{!pc2}(?tag)
+        => GasMayDepOn{!pc2}(?tag); 
+
+// External 
+
+rule externalPropagate :=
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag : Tag]
+        ExternalMayDepOn{!pc1}(?tag)
+        => ExternalMayDepOn{!pc2}(?tag);
+
+rule externalToVar :=
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?var : int, ?tag : Tag]
+        VarExternal{!pc2}(?var),
+        ExternalMayDepOn{!pc1}(?tag)
+        => VarMayDependOn{}(?var, ?tag);
+
+rule externalTaint := 
+    for (!pc: int) in pcs()
+    clause [?pca :int, ?var1 :int, ?var2 :int, ?taga : Tag, ?tag : Tag, ?loc: Loc] 
+        MayControls{!pc}(?pca, ?var2),
+        ExternalWrite{!pc}(true), // ensures that the external variable is written
+        VarMayDependOn{}(?var2, ?tag)
+        => ExternalMayDepOn{!pc}(?tag);
+
+rule externalMay := 
+    for (!pc1: int) in pcs(), (!pc2 : int) in nextForPc(!pc1)
+    clause [?tag: Tag]
+        ExternalSource{!pc2}(?tag)
+        => ExternalMayDepOn{!pc2}(?tag), 
+    clause [?tag: Tag]
+        ExternalMSize{!pc2}(true),
+        MSizeMayDepOn{!pc1}(?tag)
+        => ExternalMayDepOn{!pc2}(?tag), 
+    clause [?tag: Tag, ?var: int]
+        ExternalVar{!pc2}(?var),
+        VarMayDependOn{}(?var, ?tag)
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalMem{!pc2}(?loc),
+        MemMayDependOn{!pc1}(?loc, ?tag), 
+        ~(?loc = @T)
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalMem{!pc2}(?loc),
+        MemMayDependOn{!pc1}(@T, ?tag), 
+        ~(?loc = @T)
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalMem{!pc2}(@T), // GasMem{!pc2}(@T) means that the gas can depend on "any" location => @T and all concrete ones
+        MemMayDependOn{!pc1}(?loc, ?tag) 
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalStore{!pc2}(?loc),
+        StorMayDependOn{!pc1}(?loc, ?tag), 
+        ~(?loc = @T)
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalStore{!pc2}(?loc),
+        StorMayDependOn{!pc1}(@T, ?tag), 
+        ~(?loc = @T)
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag, ?loc: Loc]
+        ExternalStore{!pc2}(@T), // GasStor{!pc2}(@T) means that the gas can depend on "any" location => @T and all concrete ones
+        StorMayDependOn{!pc1}(?loc, ?tag) 
+        => ExternalMayDepOn{!pc2}(?tag),
+    clause [?tag: Tag]
+        ExternalGas{!pc2}(true),
+        GasMayDepOn{!pc1}(?tag)
+        => ExternalMayDepOn{!pc2}(?tag);
+
+
+/* ============  Source Rules ============ */
+
+/* this rule introduces a dependency between the opcode and the output */
+
+rule instSources :=             // 5.1
+    for (!opc: int) in interval(0, NUMOPCODES),
+        (!pc: int) in pcsForOpcode(!opc),
+        (!val: int) in getStackOutput(!pc)
+    clause
+        true
+        => VarSource{!pc}(!val, @I(!opc));
+
+/* Note that, in particular, this rule allows for tracking dependencies on all (non-writable) environment variables (assuming that they are identified by their respective opcode) */
+
+/* ============  Input Rules ============ */
+/* This rule establishes relations between stack inputs and outputs (for all opcodes with stack inputs and outputs).
+In particular, this covers the dependencies for all stack operations, such as arithmetic expressions */
+
+
+rule varDefUse :=              // 1.1
+    for (!pc: int) in pcs(), (!s : int) in interval(0, MAXSTACK), (!inp: int) in getStackInputs(!pc, !s), (!out: int) in getStackOutput(!pc)
+    clause
+        true        // NOTE: Future Work: 12.1 Filter out known accesses for mload, sha3
+        => VarVar{!pc}(!out,!inp);
+
+
+/* =========================================================================== */
+/* ======================  Opcode-specific Rules ============================= */
+/* =========================================================================== */
+
+
+// MSTORE rules 
+
+rule mstoreKnown :=     // 7.1
+    for (!pc: int) in pcsForOpcode(MSTORE), (!var : int) in getStackInputs(!pc, 1),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause [?loc : int]
+        VarConst{}(!input, ?loc)
+        => MemVar{!pc}(@L(?loc),!var);
+
+rule mstoreUnknown :=   // 7.2
+    for (!pc: int) in pcsForOpcode(MSTORE), (!var1 : int) in getStackInputs(!pc, 0),
+    (!var2 : int) in getStackInputs(!pc, 1)
+    clause
+        NotVarConst(!var1)
+        => MemVar{!pc}(@T ,!var1),
+    clause
+        NotVarConst(!var1)
+        => MemVar{!pc}(@T ,!var2),
+    clause  [?tag: Tag]
+       NotVarConst(!var1)
+        => MSizeVar{!pc}(!var1),   
+    clause [?tag: Tag]
+        NotVarConst(!var1)
+        => GasVar{!pc}(!var1), 
+    clause 
+        true
+        => MSizeWrite{!pc}(true);
+
+// MLOAD rules 
+
+rule mloadKnown :=      // 7.3
+    for (!pc: int) in pcsForOpcode(MLOAD),  (!var : int) in getStackOutput(!pc),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause [?loc :int]
+        VarConst{}(!input, ?loc)
+        => VarMem{!pc}(!var, @L(?loc)), 
+    clause // gas may be influenced by Msize 
+        true 
+        => GasMsize{!pc}(true);  
+
+rule mloadUnknown :=    // 7.4
+    for (!pc: int) in pcsForOpcode(MLOAD), (!var : int) in getStackOutput(!pc),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause
+        NotVarConst(!input)
+        => VarMem{!pc}(!var, @T),
+    clause  [?tag: Tag]    // Msize and Gas may be influenced by the arguments 
+        NotVarConst(!input)
+        => MSizeVar{!pc}(!input),
+    clause [?tag: Tag]
+        NotVarConst(!input)
+        => GasVar{!pc}(!input);
+
+// SSTORE rules
+rule sstoreKnown :=     // 7.1
+    for (!pc: int) in pcsForOpcode(SSTORE), (!var : int) in getStackInputs(!pc, 1),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause [?loc : int]
+        VarConst{}(!input, ?loc)
+        => StoreVar{!pc}(@L(?loc),!var);
+
+rule sstoreUnknown :=   // 7.2
+    for (!pc: int) in pcsForOpcode(SSTORE),
+        (!var1 : int) in getStackInputs(!pc, 0),
+        (!var2 : int) in getStackInputs(!pc, 1)
+    clause
+        NotVarConst(!var1)
+        => StoreVar{!pc}(@T ,!var1),
+    clause
+        NotVarConst(!var1)
+        => StoreVar{!pc}(@T ,!var2);
+
+// SLOAD rules
+
+rule sloadKnown :=      // 7.3
+    for (!pc: int) in pcsForOpcode(SLOAD), (!var : int) in getStackOutput(!pc),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause [?loc: int]
+        VarConst{}(!input, ?loc)
+        => VarStore{!pc}(!var, @L(?loc));
+
+rule sloadUnknown :=    // 7.4
+    for (!pc: int) in pcsForOpcode(SLOAD), (!var : int) in getStackOutput(!pc),
+    (!input : int) in getStackInputs(!pc, 0)
+    clause
+        NotVarConst(!input)
+        => VarStore{!pc}(!var, @T);
+
+// EXP rules 
+
+rule expgas := // the gas consumption of the exponentiation depends on the argument values
+    for (!pc: int) in pcsForOpcode(EXP),  (!x1 : int) in getStackInputs(!pc, 0),  (!x2 : int) in getStackInputs(!pc, 1)
+    clause 
+        true
+        => GasVar{!pc}(!x1),
+    clause 
+        true
+        => GasVar{!pc}(!x2); 
+
+// SHA3 rules
+
+rule shaKnown :=
+    for (!pc: int) in pcsForOpcode(SHA3),
+        (!var: int) in getStackOutput(!pc),
+        (!mem: int) in provideMemInterval(!pc, 0)
+    clause
+        true
+        => VarMem{!pc}(!var, @L(!mem));
+
+rule shaUnknown :=
+    for (!pc: int) in pcsForOpcode(SHA3),
+        (!var: int) in getStackOutput(!pc),
+        (!inp1: int) in getStackInputs(!pc, 0),
+        (!inp2: int) in getStackInputs(!pc, 1)
+    clause
+        NotVarConst(!inp1)
+        => VarMem{!pc}(!var, @T),
+    clause
+        NotVarConst(!inp2)
+        => VarMem{!pc}(!var, @T),
+    clause 
+        NotVarConst(!inp1)
+        => MSizeVar{!pc}(!inp1), 
+    clause 
+        NotVarConst (!inp2)
+        => MSizeVar{!pc}(!inp2), 
+    clause 
+        NotVarConst(!inp1)
+        => GasVar{!pc}(!inp1), 
+    clause 
+        NotVarConst (!inp2)
+        => GasVar{!pc}(!inp2), 
+    clause 
+        true 
+        => GasMsize{!pc}(true), 
+    clause  
+        true
+        => MSizeWrite{!pc}(true);
+
+
+// CALLDATACOPY
+
+rule calldatacopy := 
+    for (!pc: int) in pcsForOpcode(CALLDATACOPY), 
+        (!inp1: int) in getStackInputs(!pc, 0),
+        (!inp2: int) in getStackInputs(!pc, 1),
+        (!inp3: int) in getStackInputs(!pc, 2)
+    clause // the memory is influenced by the call data
+        true 
+        => MemSource{!pc}(@T, @I(CALLDATALOAD)), // CALLDATALOAD will be used as code for the call data
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp1),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp2),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp3),
+    clause
+        true 
+        => GasVar{!pc}(!inp1), 
+    clause
+        true 
+        => GasVar{!pc}(!inp2), 
+    clause
+        true 
+        => GasVar{!pc}(!inp3), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause 
+        true
+        => MSizeVar{!pc}(!inp1),
+    clause 
+        true
+        => MSizeVar{!pc}(!inp3),
+    clause
+        true
+        => MSizeWrite{!pc}(true); 
+
+// CODECOPY
+
+rule codecopy := 
+    for (!pc: int) in pcsForOpcode(CODECOPY), 
+        (!inp1: int) in getStackInputs(!pc, 0),
+        (!inp2: int) in getStackInputs(!pc, 1),
+        (!inp3: int) in getStackInputs(!pc, 2)
+    clause // the memory is influenced by the call data
+        true 
+        => MemSource{!pc}(@T, @I(CODECOPY)),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp1),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp2),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp3),
+    clause
+        true 
+        => GasVar{!pc}(!inp1), 
+    clause
+        true 
+        => GasVar{!pc}(!inp2), 
+    clause
+        true 
+        => GasVar{!pc}(!inp3), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause 
+        true
+        => MSizeVar{!pc}(!inp1),
+    clause 
+        true
+        => MSizeVar{!pc}(!inp3),
+    clause
+        true
+        => MSizeWrite{!pc}(true); 
+
+// BALANCE
+
+rule balance := 
+    for (!pc: int) in pcsForOpcode(BALANCE), (!out: int) in getStackOutput(!pc)
+    clause 
+        true 
+        => VarExternal{!pc}(!out); 
+    
+// EXTCODESIZE
+
+rule extcodesize := 
+    for (!pc: int) in pcsForOpcode(EXTCODESIZE), (!out: int) in getStackOutput(!pc)
+    clause 
+        true 
+        => VarExternal{!pc}(!out);
+
+// EXTCODECOPY
+
+rule extcodecopy := 
+    for (!pc: int) in pcsForOpcode(EXTCODECOPY), 
+        (!inp1: int) in getStackInputs(!pc, 0),
+        (!inp2: int) in getStackInputs(!pc, 1),
+        (!inp3: int) in getStackInputs(!pc, 2),
+        (!inp4: int) in getStackInputs(!pc, 3)
+    clause // the memory is influenced by the call data
+        true 
+        => MemSource{!pc}(@T, @I(EXTCODECOPY)),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp1),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp2),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp3),
+    clause
+        true 
+        => MemVar{!pc}(@T, !inp4),
+    clause 
+        true 
+        => MemExternal{!pc}(@T),
+    clause
+        true 
+        => GasVar{!pc}(!inp2), 
+    clause
+        true 
+        => GasVar{!pc}(!inp3), 
+    clause
+        true 
+        => GasVar{!pc}(!inp4), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause 
+        true
+        => MSizeVar{!pc}(!inp2),
+    clause 
+        true
+        => MSizeVar{!pc}(!inp4),
+    clause
+        true
+        => MSizeWrite{!pc}(true); 
+
+// GAS
+rule gas := 
+    for (!pc: int) in pcsForOpcode(GAS), (!out: int) in getStackOutput(!pc)
+    clause
+        true
+        => VarGas{!pc}(!out);
+
+
+// MSIZE
+
+rule msize := 
+    for (!pc: int) in pcsForOpcode(GAS), (!out: int) in getStackOutput(!pc)
+    clause
+        true
+        => VarMsize{!pc}(!out);
+
+// LOG
+// TODO Unfold
+/*
+rule log := 
+    for (!i: int) in interval(0, 5), (!pc: int) in pcsForOpcode(LOG+!i), (!x1 : int) in getStackInputs(!pc, 0),
+    (!x2 : int) in getStackInputs(!pc, 1)
+    clause
+        true 
+        => GasVar{!pc}(!x1), 
+    clause
+        true 
+        => GasVar{!pc}(!x2), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause
+        true 
+        => MSizeVar{!pc}(!x1), 
+    clause
+        true 
+        => MSizeVar{!pc}(!x2);
+    */
+// RETURN
+
+rule return := 
+    for (!pc: int) in pcsForOpcode(RETURN), (!x1 : int) in getStackInputs(!pc, 0),
+    (!x2 : int) in getStackInputs(!pc, 1)
+    clause
+        true 
+        => GasVar{!pc}(!x1), 
+    clause
+        true 
+        => GasVar{!pc}(!x2), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause
+        true 
+        => MSizeVar{!pc}(!x1), 
+    clause
+        true 
+        => MSizeVar{!pc}(!x2);
+
+// SELFDESTRUCT
+
+rule selfdestruct := 
+    for (!pc: int) in pcsForOpcode(SELFDESTRUCT), (!x1 : int) in getStackInputs(!pc, 0)
+    clause 
+        true
+        => ExternalWrite{!pc}(true),
+    clause 
+        true
+        => ExternalVar{!pc}(!x1),
+    clause
+        true 
+        => ExternalSource{!pc}(@I(ADDRESS)),     
+    clause
+        true 
+        => GasVar{!pc}(!x1), 
+    clause
+        true
+        => GasMsize{!pc}(true), 
+    clause
+        true
+        => GasExternal{!pc}(true);
+
+// (STATICCALL, CREATE)       
+
+/* ============ CALL rules ================ */
+
+// Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+pred Call{int}: int * int * int * int * int * int * int * int;
+
+rule callInit :=      
+    for (!pc: int) in pcsForOpcode(CALL),
+    (!varg: int) in getStackInputs(!pc, 0),
+    (!varto: int) in getStackInputs(!pc, 1),
+    (!varva: int) in getStackInputs(!pc, 2),
+    (!vario: int) in getStackInputs(!pc, 3),
+    (!varis: int) in getStackInputs(!pc, 4),
+    (!varoo: int) in getStackInputs(!pc, 5),
+    (!varos: int) in getStackInputs(!pc, 6),
+    (!varres:int) in getStackOutput(!pc)
+    clause 
+    true
+    => Call{!pc}(!varres, !varg, !varto, !varva, !vario, !varis, !varoo, !varos);
+
+pred IsEnvTag{}: Tag;
+
+rule isEnvTagInit := 
+clause
+    true => IsEnvTag(@I(TIMESTAMP)), 
+clause
+    true => IsEnvTag(@I(BLOCKHASH)),
+clause
+    true => IsEnvTag(@I(NUMBER)),
+clause
+    true => IsEnvTag(@I(DIFFICULTY)),
+clause
+    true => IsEnvTag(@I(GASLIMIT)),
+clause
+    true => IsEnvTag(@I(COINBASE)),
+clause
+    true => IsEnvTag(@I(GASPRIZE)),
+clause
+    true => IsEnvTag(@I(ORIGIN)),
+clause
+    true => IsEnvTag(@I(CHAINID)); // Note: We do not consider CODE or balance here, because these are part of the external environment
+
+pred OutputFragmentUnknown{int}: bool; // given that at pc there is a call, the output fragment is unknown 
+pred InputFragmentUnknown{int}: bool; 
+
+  rule callFragmentsUnknown := 
+    for (!pc: int) in pcsForOpcode(CALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => OutputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => OutputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => InputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => InputFragmentUnknown{!pc}(true); 
+
+/* ===== Call rules ===== */ 
+
+// General Approach: List all possible dependencies arising from Def Use sets in CFG semantics
+
+/* ============= External Dependencies ================= */
+
+rule callExternal :=
+    for (!pc: int) in pcsForOpcode(CALL)
+    clause  // the Call code writes the external variable
+        true
+        => ExternalWrite{!pc}(true),
+    clause [?env: Tag] // External may depend on active contract
+        true
+        => ExternalSource{!pc}(@I(ADDRESS)),
+    clause [?env: Tag] // External may depend on global environment variables
+        IsEnvTag(?env)
+        => ExternalSource{!pc}(?env),
+    clause
+        true  // External Depends on Gas
+        => ExternalGas{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => ExternalVar{!pc}(?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => ExternalVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => ExternalVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => ExternalVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => ExternalVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => ExternalVar{!pc}(?oo), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => ExternalVar{!pc}(?os),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome since they can be read
+        true 
+        => ExternalStore{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        InputFragmentUnknown{!pc}(true)
+        => ExternalMem{!pc}(@T); // in case the input memory fragment is not known, external may depend on the whole memory
+
+rule callExternalMemory :=
+     for (!pc: int) in pcsForOpcode(CALL),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => ExternalMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= Return Value Dependencies ================= */
+
+// The output stack variable has exactly the same dependencies as the external variables (just that we need to make the dependency on External explicit)
+// However, the dependencies between input and output variables are already established by the rule that initializes AssignVar
+
+rule callReturn :=
+    for (!pc: int) in pcsForOpcode(CALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os) // the Return Value depends on the external environment
+        => VarExternal{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), // the Return Value depends on the external environment
+        IsEnvTag(?env)
+        => VarSource{!pc}(?res, ?env), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os) // the Return Value depends on the external environment
+        => VarSource{!pc}(?res, @I(ADDRESS)), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os) // the Return Value depends on the external environment
+        => VarGas{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome since they can be read
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os) // The return value depends on the global storage 
+        => VarStore{!pc}(?res, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        InputFragmentUnknown{!pc}(true)
+        => VarMem{!pc}(?res, @T); // in case the input memory fragment is not known, the return value may depend on the whole memory
+
+rule callReturnMemory :=
+     for (!pc: int) in pcsForOpcode(CALL),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => VarMem{!pc}(?res, @L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= Gas Dependencies ================= */
+
+
+// The gas dependencies are almost the same as of External, with the only difference that there is also a dependency Msize
+rule callGas := 
+    for (!pc: int) in pcsForOpcode(CALL)
+    clause
+        true  // Gas depends on External
+        => GasExternal{!pc}(true),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        IsEnvTag(?env)
+        => GasSource{!pc}(?env),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        true
+        => GasSource{!pc}(@I(ADDRESS)),
+    clause
+        true  // Gas depends on MSize
+        => GasMsize{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas depends on Call input variables
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => GasVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => GasVar{!pc}(?oo), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => GasVar{!pc}(?os),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome (and hence gas) since they can be read
+        true 
+        => GasStor{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        InputFragmentUnknown{!pc}(true)
+        => GasMem{!pc}(@T); // in case the input memory fragment is not known, gas may depend on the whole memory
+
+rule callGasMemory :=
+     for (!pc: int) in pcsForOpcode(CALL),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => GasMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= MSize Dependencies ================= */
+
+// MSize only depends on the arguments that specify the input and result data memory fragments
+rule callMSize := 
+    for (!pc: int) in pcsForOpcode(CALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => MSizeVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => MSizeVar{!pc}(?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => MSizeVar{!pc}(?oo), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => MSizeVar{!pc}(?os);
+
+
+/* ============= Memory Dependencies ================= */
+
+rule callMemoryOutUnknown := 
+    for (!pc: int) in pcsForOpcode(CALL) // case: input memory and output memory unknown 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // external static gloabl variables are ropagated to unknow meory fragment
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true), 
+        IsEnvTag(?tag)
+        => MemSource{!pc}(@T, ?tag),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // external static gloabl variables are ropagated to unknow meory fragment
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true) 
+        => MemSource{!pc}(@T, @I(ADDRESS)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemGas{!pc}(@T),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemExternal{!pc}(@T),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemVar{!pc}(@T,?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemVar{!pc}(@T,?to),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemVar{!pc}(@T,?va),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?io)
+        => MemVar{!pc}(@T,?io),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?is)
+        => MemVar{!pc}(@T,?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?oo)
+        => MemVar{!pc}(@T,?oo),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?os)
+        => MemVar{!pc}(@T,?os),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The whole memory is propagated to the whole memory 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        InputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@T, @T, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?iov: int, ?isv: int] // The input memory is propagated to the whole memory 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        VarConst(?io, ?iov),
+        VarConst(?is, ?isv),
+        OutputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@T, @L(?iov), @L(?isv));
+
+rule callMemoryOutKnown := 
+    for (!pc: int) in pcsForOpcode(CALL), (!i:int) in provideMemInterval (!pc, 2) // output memory is known
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemGas{!pc}(@L(!i)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        IsEnvTag(?tag)
+        => MemSource{!pc}(@L(!i), ?tag),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemSource{!pc}(@L(!i), @I(ADDRESS)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemExternal{!pc}(@L(!i)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemVar{!pc}(@L(!i),?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemVar{!pc}(@L(!i),?to),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+        => MemVar{!pc}(@L(!i),?va),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => MemVar{!pc}(@L(!i),?io),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        NotVarConst(?is)
+        => MemVar{!pc}(@L(!i),?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The whole memory is propagated to the whole memory 
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        InputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@L(!i), @T, @T), // All memory is propagated to known fraction 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?iov: int, ?isv: int]
+        Call{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os), 
+        VarConst(?io, ?iov),
+        VarConst(?is, ?isv)
+        => MemMem{!pc}(@L(!i), @L(?iov), @L(?isv)); // All memory is propagated to known fraction
+
+/* ================= STATICCALL ============================= */
+// Note: similar to static call, just that the external environment stays unchanged
+
+// StaticCall{!pc}(?res, ?arg, ?to, ?va, ?io, ?is, ?oo, ?os)
+pred StaticCall{int}: int * int * int * int * int * int * int;
+
+rule staticcallInit :=      
+    for (!pc: int) in pcsForOpcode(STATICCALL),
+    (!varg: int) in getStackInputs(!pc, 0),
+    (!varto: int) in getStackInputs(!pc, 1),
+    (!vario: int) in getStackInputs(!pc, 2),
+    (!varis: int) in getStackInputs(!pc, 3),
+    (!varoo: int) in getStackInputs(!pc, 4),
+    (!varos: int) in getStackInputs(!pc, 5),
+    (!varres:int) in getStackOutput(!pc)
+    clause 
+    true
+    => StaticCall{!pc}(!varres, !varg, !varto, !vario, !varis, !varoo, !varos);
+
+  rule staticCallFragmentsUnknown := 
+    for (!pc: int) in pcsForOpcode(STATICCALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => OutputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => OutputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => InputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => InputFragmentUnknown{!pc}(true); 
+
+// General Approach: List all possible dependencies arising from Def Use sets in CFG semantics
+
+/* ============= Return Value Dependencies ================= */
+
+// The output stack variable has exactly the same dependencies as the external variables (just that we need to make the dependency on External explicit)
+// However, the dependencies between input and output variables are already established by the rule that initializes AssignVar
+
+rule staticCallReturn :=
+    for (!pc: int) in pcsForOpcode(STATICCALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os) // the Return Value depends on the external environment
+        => VarExternal{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), // the Return Value depends on the static global environment
+        IsEnvTag(?env)
+        => VarSource{!pc}(?res, ?env), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os) // the Return Value depends on the active account
+        => VarSource{!pc}(?res, @I(ADDRESS)), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os) // the Return Value depends on the gas
+        => VarGas{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome since they can be read
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os) // The return value depends on the global storage 
+        => VarStore{!pc}(?res, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        InputFragmentUnknown{!pc}(true)
+        => VarMem{!pc}(?res, @T); // in case the input memory fragment is not known, the return value may depend on the whole memory
+
+rule staticCallReturnMemory :=
+     for (!pc: int) in pcsForOpcode(STATICCALL),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => VarMem{!pc}(?res, @L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= Gas Dependencies ================= */
+
+
+// The gas dependencies are almost the same as of External, with the only difference that there is also a dependency Msize
+rule staticCallGas := 
+    for (!pc: int) in pcsForOpcode(STATICCALL)
+    clause
+        true  // Gas depends on External
+        => GasExternal{!pc}(true),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        IsEnvTag(?env)
+        => GasSource{!pc}(?env),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        true
+        => GasSource{!pc}(@I(ADDRESS)),
+    clause
+        true  // Gas depends on MSize
+        => GasMsize{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas depends on Call input variables
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => GasVar{!pc}(?to), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => GasVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => GasVar{!pc}(?oo), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => GasVar{!pc}(?os),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome (and hence gas) since they can be read
+        true 
+        => GasStor{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        InputFragmentUnknown{!pc}(true)
+        => GasMem{!pc}(@T); // in case the input memory fragment is not known, gas may depend on the whole memory
+
+rule staticCallGasMemory :=
+     for (!pc: int) in pcsForOpcode(STATICCALL),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => GasMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= MSize Dependencies ================= */
+
+// MSize only depends on the arguments that specify the input and result data memory fragments
+rule staticCallMSize := 
+    for (!pc: int) in pcsForOpcode(STATICCALL)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => MSizeVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?is)
+        => MSizeVar{!pc}(?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?oo)
+        => MSizeVar{!pc}(?oo), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?os)
+        => MSizeVar{!pc}(?os);
+
+
+/* ============= Memory Dependencies ================= */
+
+rule staticCallMemoryOutUnknown := 
+    for (!pc: int) in pcsForOpcode(STATICCALL) // case: input memory and output memory unknown 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // external static gloabl variables are ropagated to unknow meory fragment
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true), 
+        IsEnvTag(?tag)
+        => MemSource{!pc}(@T, ?tag),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // external static gloabl variables are ropagated to unknow meory fragment
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true) 
+        => MemSource{!pc}(@T, @I(ADDRESS)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemGas{!pc}(@T),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemExternal{!pc}(@T),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemVar{!pc}(@T,?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true)
+        => MemVar{!pc}(@T,?to),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?io)
+        => MemVar{!pc}(@T,?io),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?is)
+        => MemVar{!pc}(@T,?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?oo)
+        => MemVar{!pc}(@T,?oo),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        NotVarConst(?os)
+        => MemVar{!pc}(@T,?os),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The whole memory is propagated to the whole memory 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        OutputFragmentUnknown{!pc}(true),
+        InputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@T, @T, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?iov: int, ?isv: int] // The input memory is propagated to the whole memory 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        VarConst(?io, ?iov),
+        VarConst(?is, ?isv),
+        OutputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@T, @L(?iov), @L(?isv)); 
+
+rule staticCallMemoryOutKnown := 
+    for (!pc: int) in pcsForOpcode(STATICCALL), (!i:int) in provideMemInterval (!pc, 2) // output memory is known
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => MemGas{!pc}(@L(!i)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        IsEnvTag(?tag)
+        => MemSource{!pc}(@L(!i), ?tag),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => MemSource{!pc}(@L(!i), @I(ADDRESS)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => MemExternal{!pc}(@L(!i)),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => MemVar{!pc}(@L(!i),?arg),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os)
+        => MemVar{!pc}(@L(!i),?to),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os),
+        NotVarConst(?io)
+        => MemVar{!pc}(@L(!i),?io),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // Gas is propagated to unknown memory fragment 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        NotVarConst(?is)
+        => MemVar{!pc}(@L(!i),?is),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The whole memory is propagated to the whole memory 
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        InputFragmentUnknown{!pc}(true)
+        => MemMem{!pc}(@L(!i), @T, @T), // All memory is propagated to known fraction 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?iov: int, ?isv: int]
+        StaticCall{!pc}(?res, ?arg, ?to, ?io, ?is, ?oo, ?os), 
+        VarConst(?io, ?iov),
+        VarConst(?is, ?isv)
+        => MemMem{!pc}(@L(!i), @L(?iov), @L(?isv)); // All memory is propagated to known fraction
+
+/* ================= CREATE ============================= */
+// Create{!pc}(?res, ?arg, ?va, ?io, ?is, ?oo)
+pred Create{int}: int * int * int * int;
+
+rule createInit :=      
+    for (!pc: int) in pcsForOpcode(CREATE),
+    (!varva: int) in getStackInputs(!pc, 0),
+    (!vario: int) in getStackInputs(!pc, 1),
+    (!varis: int) in getStackInputs(!pc, 2),
+    (!varres:int) in getStackOutput(!pc)
+    clause 
+    true
+    => Create{!pc}(!varres, !varva, !vario, !varis);
+
+
+  rule createFragmentsUnknown := 
+    for (!pc: int) in pcsForOpcode(CREATE)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?io)
+        => InputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // External depends on Call input variables
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?is)
+        => InputFragmentUnknown{!pc}(true); 
+
+// General Approach: List all possible dependencies arising from Def Use sets in CFG semantics
+
+/* ============= External Dependencies ================= */
+
+rule createExternal :=
+    for (!pc: int) in pcsForOpcode(CREATE)
+    clause  // the Call code writes the external variable
+        true
+        => ExternalWrite{!pc}(true),
+    clause [?env: Tag] // External may depend on active contract
+        true
+        => ExternalSource{!pc}(@I(ADDRESS)),
+    clause [?env: Tag] // External may depend on global environment variables
+        IsEnvTag(?env)
+        => ExternalSource{!pc}(?env),
+    clause
+        true  // External Depends on Gas
+        => ExternalGas{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is)
+        => ExternalVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?io)
+        => ExternalVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome since they can be read
+        true 
+        => ExternalStore{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        InputFragmentUnknown{!pc}(true)
+        => ExternalMem{!pc}(@T); // in case the input memory fragment is not known, external may depend on the whole memory
+
+rule createExternalMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => ExternalMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+    
+
+/* ============= Return Value Dependencies ================= */
+
+// The output stack variable has exactly the same dependencies as the external variables (just that we need to make the dependency on External explicit)
+// However, the dependencies between input and output variables are already established by the rule that initializes AssignVar
+
+rule createReturn :=
+    for (!pc: int) in pcsForOpcode(CREATE)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is) // the Return Value depends on the external environment
+        => VarExternal{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        Create{!pc}(?res, ?va, ?io, ?is), // the Return Value depends on the external environment
+        IsEnvTag(?env)
+        => VarSource{!pc}(?res, ?env), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag]
+        Create{!pc}(?res, ?va, ?io, ?is) // the Return Value depends on the external environment
+        => VarSource{!pc}(?res, @I(ADDRESS)), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is) // the Return Value depends on the external environment
+        => VarGas{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome since they can be read
+        Create{!pc}(?res, ?va, ?io, ?is) // The return value depends on the global storage 
+        => VarStore{!pc}(?res, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        InputFragmentUnknown{!pc}(true)
+        => VarMem{!pc}(?res, @T); // in case the input memory fragment is not known, the return value may depend on the whole memory
+
+rule createReturnMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        Create{!pc}(?res, ?va, ?io, ?is)
+        => VarMem{!pc}(?res, @L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= Gas Dependencies ================= */
+
+
+// The gas dependencies are almost the same as of External, with the only difference that there is also a dependency Msize
+rule createGas := 
+    for (!pc: int) in pcsForOpcode(CREATE)
+    clause
+        true  // Gas depends on External
+        => GasExternal{!pc}(true),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        IsEnvTag(?env)
+        => GasSource{!pc}(?env),
+    clause [?env: Tag] // Gas may depend on active account (accesible as CALLER)
+        true
+        => GasSource{!pc}(@I(ADDRESS)),
+    clause
+        true  // Gas depends on MSize
+        => GasMsize{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is)
+        => GasVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?io)
+        => GasVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // the global storage variable may influence the outcome (and hence gas) since they can be read
+        true 
+        => GasStor{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        InputFragmentUnknown{!pc}(true)
+        => GasMem{!pc}(@T); // in case the input memory fragment is not known, gas may depend on the whole memory
+
+rule createGasMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => GasMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= MSize Dependencies ================= */
+
+// MSize only depends on the arguments that specify the input and result data memory fragments
+rule createMSize := 
+    for (!pc: int) in pcsForOpcode(CREATE)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?io)
+        => MSizeVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int]
+        Create{!pc}(?res, ?va, ?io, ?is),
+        NotVarConst(?is)
+        => MSizeVar{!pc}(?is);
+
+
+/* ================= CREATE2 ============================= */
+// Create2{!pc}(?res, ?arg, ?va, ?io, ?is, ?oo)
+pred Create2{int}: int * int * int * int * int;
+
+rule create2Init :=      
+    for (!pc: int) in pcsForOpcode(CREATE2),
+    (!varva: int) in getStackInputs(!pc, 0),
+    (!vario: int) in getStackInputs(!pc, 1),
+    (!varis: int) in getStackInputs(!pc, 2),
+    (!varsalt: int) in getStackInputs(!pc,3),
+    (!varres:int) in getStackOutput(!pc)
+    clause 
+    true
+    => Create2{!pc}(!varres, !varva, !vario, !varis, !varres);
+
+
+  rule create2FragmentsUnknown := 
+    for (!pc: int) in pcsForOpcode(CREATE2)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // External depends on Call input variables
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?io)
+        => InputFragmentUnknown{!pc}(true), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // External depends on Call input variables
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?is)
+        => InputFragmentUnknown{!pc}(true); 
+
+// General Approach: List all possible dependencies arising from Def Use sets in CFG semantics
+
+/* ============= External Dependencies ================= */
+
+rule create2External :=
+    for (!pc: int) in pcsForOpcode(CREATE2)
+    clause  // the Call code writes the external variable
+        true
+        => ExternalWrite{!pc}(true),
+    clause [?env: Tag] // External may depend on active contract
+        true
+        => ExternalSource{!pc}(@I(ADDRESS)),
+    clause [?env: Tag] // External may depend on global environment variables
+        IsEnvTag(?env)
+        => ExternalSource{!pc}(?env),
+    clause
+        true  // External Depends on Gas
+        => ExternalGas{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt)
+        => ExternalVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?io)
+        => ExternalVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt)
+        => ExternalVar{!pc}(?salt), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // the global storage variable may influence the outcome since they can be read
+        true 
+        => ExternalStore{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        InputFragmentUnknown{!pc}(true)
+        => ExternalMem{!pc}(@T); // in case the input memory fragment is not known, external may depend on the whole memory
+
+rule create2ExternalMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE2),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => ExternalMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+    
+
+/* ============= Return Value Dependencies ================= */
+
+// The output stack variable has exactly the same dependencies as the external variables (just that we need to make the dependency on External explicit)
+// However, the dependencies between input and output variables are already established by the rule that initializes AssignVar
+
+rule create2Return :=
+    for (!pc: int) in pcsForOpcode(CREATE2)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt) // the Return Value depends on the external environment
+        => VarExternal{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt), // the Return Value depends on the external environment
+        IsEnvTag(?env)
+        => VarSource{!pc}(?res, ?env), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?env: Tag, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt) // the Return Value depends on the external environment
+        => VarSource{!pc}(?res, @I(ADDRESS)), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt) // the Return Value depends on the external environment
+        => VarGas{!pc}(?res),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // the global storage variable may influence the outcome since they can be read
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt) // The return value depends on the global storage 
+        => VarStore{!pc}(?res, @T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        InputFragmentUnknown{!pc}(true)
+        => VarMem{!pc}(?res, @T); // in case that the input memory fragment is not known, the return value may depend on the whole memory
+
+rule create2ReturnMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE2),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // The input memory fraction influences the outcome
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt)
+        => VarMem{!pc}(?res, @L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= Gas Dependencies ================= */
+
+// The gas dependencies are almost the same as of External, with the only difference that there is also a dependency Msize
+rule create2Gas := 
+    for (!pc: int) in pcsForOpcode(CREATE2)
+    clause
+        true  // Gas depends on External
+        => GasExternal{!pc}(true),
+    clause [?env: Tag] // Gas may depend on global environment variables
+        IsEnvTag(?env)
+        => GasSource{!pc}(?env),
+    clause [?env: Tag] // Gas may depend on active account (accesible as CALLER)
+        true
+        => GasSource{!pc}(@I(ADDRESS)),
+    clause
+        true  // Gas depends on MSize
+        => GasMsize{!pc}(true),
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt)
+        => GasVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?io)
+        => GasVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?is)
+        => ExternalVar{!pc}(?is), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt)
+        => GasVar{!pc}(?va), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int] // the global storage variable may influence the outcome (and hence gas) since they can be read
+        true 
+        => GasStor{!pc}(@T), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        InputFragmentUnknown{!pc}(true)
+        => GasMem{!pc}(@T); // in case that the input memory fragment is not known, gas may depend on the whole memory
+
+rule create2GasMemory :=
+     for (!pc: int) in pcsForOpcode(CREATE2),  (!i:int) in provideMemInterval(!pc, 1) // case input memory interval is known
+     clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int] // The input memory fraction influences the outcome
+        true
+        => GasMem{!pc}(@L(!i)); // in case the input memory interval is known, the outcome is influenced by the concrete cells of the input memory
+
+/* ============= MSize Dependencies ================= */
+
+// MSize only depends on the arguments that specify the input and result data memory fragments
+rule create2MSize := 
+    for (!pc: int) in pcsForOpcode(CREATE2)
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?io)
+        => MSizeVar{!pc}(?io), 
+    clause [?loc: Loc, ?tag: Tag, ?res: int, ?arg: int, ?to: int, ?va: int, ?io:int , ?is:int, ?oo:int, ?os:int, ?salt:int]
+        Create2{!pc}(?res, ?va, ?io, ?is, ?salt),
+        NotVarConst(?is)
+        => MSizeVar{!pc}(?is);

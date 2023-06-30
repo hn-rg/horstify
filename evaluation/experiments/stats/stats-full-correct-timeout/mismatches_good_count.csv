@@ -1,0 +1,399 @@
+tool_1,contract,property,type,matches_1,count_1,tool_2,matches_2,count_2
+securify,0x39aa4006ee5941c0c0e41b924fdafcb2c4c918e8,TimestampDepend,Safety,"[163.0, 248.0, 324.0, 400.0, 568.0, 696.0, 784.0, 863.0, 953.0, 1049.0, 1125.0, 1212.0]",12.0,horstify,"[163.0, 696.0, 568.0]",3.0
+securify,0x39aa4006ee5941c0c0e41b924fdafcb2c4c918e8,RestrictedWrite,Violation,"[910.0, 1006.0, 1082.0, 1158.0]",4.0,horstify,"[1082.0, 910.0, 1006.0]",3.0
+securify,0x91ee990363fbb6aca7497632af8790efc238872f,RestrictedWrite,Violation,"[384.0, 408.0, 562.0, 802.0, 1324.0, 1090.0, 1430.0, 1254.0, 1266.0, 1450.0]",10.0,horstify,"[384.0, 1090.0, 1266.0, 802.0, 562.0, 1430.0, 408.0]",7.0
+securify,0x4028b9672bfd71ba2fcd97a6c82e06f72eaa14ba,RestrictedWrite,Violation,"[542.0, 606.0, 617.0, 700.0, 737.0, 782.0, 791.0, 808.0]",8.0,horstify,"[617.0, 700.0, 606.0, 542.0]",4.0
+securify,0x1b27996479b11abc8a8d0447deb3fb0183788484,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0x8f13a1d43408b6434dd10e161361386f3952d665,RestrictedWrite,Violation,"[370.0, 531.0, 595.0, 606.0, 671.0, 708.0, 731.0, 740.0, 757.0]",9.0,horstify,"[370.0, 595.0, 531.0, 606.0, 671.0]",5.0
+securify,0x1c4112b81a5bfb3288573c8d5b8fecc8504ac59d,TimestampDepend,Safety,"[623.0, 1015.0, 1392.0, 1459.0, 2191.0, 2407.0, 1782.0, 2311.0, 2527.0]",9.0,horstify,"[1392.0, 1782.0, 1015.0]",3.0
+securify,0x1c4112b81a5bfb3288573c8d5b8fecc8504ac59d,RestrictedWrite,Violation,"[1947.0, 2030.0]",2.0,horstify,[],0.0
+securify,0x291fe86f31500adf910accd02e57c702fe9d0ec3,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x428Da5ff72D8Be0EfAa85336B6c6A9fC9E0F73fe,RestrictedWrite,Violation,"[571.0, 635.0, 646.0, 669.0, 674.0, 758.0, 795.0, 804.0, 823.0, 859.0, 873.0, 890.0]",12.0,horstify,"[674.0, 758.0, 646.0, 635.0, 571.0, 669.0]",6.0
+securify,0x841ffaba4532c83907b45fc05984eef8cc3474bc,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0xc7dfe4304bd4c9dd6ed414443c077fc06501e9ac,TimestampDepend,Safety,"[965.0, 1068.0, 1401.0, 1268.0, 1635.0, 2062.0, 2448.0]",7.0,horstify,"[2448.0, 1635.0, 965.0, 1401.0, 2062.0]",5.0
+securify,0x1d77340D3819007BbfD7fdD37C22BD3b5c311350,TimestampDepend,Safety,"[890.0, 3180.0, 3497.0, 1252.0]",4.0,horstify,"[890.0, 3180.0]",2.0
+securify,0x1d77340D3819007BbfD7fdD37C22BD3b5c311350,RestrictedWrite,Violation,"[1463.0, 1493.0, 3085.0, 3981.0, 4000.0, 4057.0, 4102.0, 3278.0, 3386.0, 3403.0, 4113.0, 4136.0, 4145.0, 3841.0, 3858.0, 3928.0]",16.0,horstify,"[4000.0, 3841.0, 4136.0, 3403.0, 3981.0, 3085.0, 3278.0, 4145.0, 3858.0, 1493.0, 1463.0, 3928.0, 3386.0]",13.0
+securify,0x260972db3571a4297b9e0cfa237eabbc9c6e35ce,TimestampDepend,Safety,"[145.0, 380.0, 503.0, 592.0, 681.0]",5.0,horstify,"[145.0, 380.0]",2.0
+securify,0xb97768a8e31789dbece1403694e53c2142c3d706,TimestampDepend,Safety,"[213.0, 418.0, 1415.0, 2040.0, 2218.0, 3168.0, 2980.0, 3231.0]",8.0,horstify,"[418.0, 213.0, 1415.0, 2040.0, 2218.0]",5.0
+securify,0xb97768a8e31789dbece1403694e53c2142c3d706,RestrictedWrite,Violation,"[2087.0, 2156.0, 2165.0, 2179.0, 2238.0, 2359.0, 2368.0, 2382.0, 2392.0, 2651.0, 2656.0, 2667.0, 2691.0, 2707.0, 2727.0, 2755.0, 2551.0, 2556.0, 2567.0]",19.0,horstify,[2087.0],1.0
+securify,0x82df5022fbcfdd877830371d7713f0181a554c9c,TimestampDepend,Safety,[949.0],1.0,horstify,[],0.0
+securify,0x33098a5e8f5e932831434748cdad425487b9aaf1,TimestampDepend,Safety,"[375.0, 435.0, 504.0]",3.0,horstify,"[375.0, 504.0]",2.0
+securify,0x142eba6cd4e1977fba4a440c882ee460654d1766,RestrictedWrite,Violation,"[993.0, 1055.0, 1072.0]",3.0,horstify,"[1072.0, 993.0]",2.0
+securify,0x931d84b85da4f377ac977e1f78603af166c224f4,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x949bEd886c739f1A3273629b3320db0C5024c719,TimestampDepend,Safety,"[2189.0, 2256.0, 226.0]",3.0,horstify,"[226.0, 2189.0]",2.0
+securify,0x750241c16c9fb878a7afd2b07b80f53e02c3f634,RestrictedWrite,Violation,"[542.0, 606.0, 617.0, 700.0, 737.0, 756.0, 792.0, 806.0, 823.0]",9.0,horstify,"[617.0, 700.0, 542.0, 606.0]",4.0
+securify,0xebfed9e4ae035b0f7ae982d1a7abfe0aa26a0341,TimestampDepend,Safety,"[857.0, 887.0]",2.0,horstify,[],0.0
+securify,0xebfed9e4ae035b0f7ae982d1a7abfe0aa26a0341,RestrictedWrite,Violation,"[366.0, 424.0, 641.0, 759.0, 772.0, 898.0, 509.0, 607.0, 616.0, 747.0]",10.0,horstify,[366.0],1.0
+securify,0xc18a451d4ef2a85e7bf8404131c5f994a98bdb15,RestrictedWrite,Violation,"[497.0, 561.0, 572.0, 637.0, 674.0, 697.0, 706.0, 723.0]",8.0,horstify,"[497.0, 561.0, 572.0, 637.0]",4.0
+securify,0xdc84953d7c6448e498eb3c33ab0f815da5d13999,RestrictedWrite,Violation,"[422.0, 566.0, 576.0, 698.0, 709.0, 720.0, 784.0, 795.0, 895.0, 961.0, 1028.0]",11.0,horstify,"[576.0, 784.0, 720.0, 961.0, 709.0, 422.0, 566.0, 698.0, 795.0, 895.0]",10.0
+securify,0x5624eed6e0ebef05eb9edd4c24d5abc08e181e71,TimestampDepend,Safety,"[712.0, 780.0, 928.0]",3.0,horstify,"[928.0, 712.0]",2.0
+securify,0xdcf14a9cba1d5ee6d4671c20c559373f331910ea,TimestampDepend,Safety,"[2302.0, 2981.0, 3630.0]",3.0,horstify,[2302.0],1.0
+securify,0x993bbc77c48ca648659129602dd507a96bc5b561,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x3d5894b6801221bf296a2ac2d6ccf5ea09ce399a,RestrictedWrite,Violation,"[220.0, 303.0, 314.0, 793.0, 843.0, 396.0, 332.0]",7.0,horstify,[],0.0
+securify,0x488b7b5ed8ee6fa28c0cb3a0ee7351573070601d,TimestampDepend,Safety,"[439.0, 484.0, 536.0, 590.0, 946.0]",5.0,horstify,[439.0],1.0
+securify,0x488b7b5ed8ee6fa28c0cb3a0ee7351573070601d,RestrictedWrite,Violation,"[646.0, 696.0, 703.0, 801.0, 853.0, 860.0]",6.0,horstify,"[646.0, 696.0, 703.0]",3.0
+securify,0x51cfc0d9bcf4ba234d442e3200b97d660e02d41f,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x408b8fBc19bB5FFfF7d5E5c430F765524FAE77c5,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xd8d4E59fabb7D8A1D013D577689cB612A8e5F826,TimestampDepend,Safety,"[339.0, 1846.0, 3116.0, 3360.0, 1953.0, 1471.0, 2084.0]",7.0,horstify,"[3360.0, 339.0, 1846.0, 3116.0, 1471.0]",5.0
+securify,0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7,RestrictedWrite,Violation,[333.0],1.0,horstify,[],0.0
+securify,0x943bbeEf41460a3F0f3Ac7f7a062128ad0Ba9cB1,TimestampDepend,Safety,"[172.0, 514.0, 597.0, 680.0]",4.0,horstify,"[514.0, 172.0]",1.0
+securify,0x943bbeEf41460a3F0f3Ac7f7a062128ad0Ba9cB1,RestrictedWrite,Violation,"[252.0, 259.0]",2.0,horstify,[259.0],1.0
+securify,0x2f5cd5d797ec8868a5aaefd784ed2c5bc46a1a47,RestrictedWrite,Violation,"[714.0, 778.0, 789.0, 854.0, 891.0, 908.0, 916.0, 933.0]",8.0,horstify,"[789.0, 854.0, 714.0, 778.0]",4.0
+securify,0xdcb13fa157eebf22ddc8c9aa1d6e394810de6fa3,RestrictedWrite,Violation,"[447.0, 514.0, 525.0, 590.0, 629.0, 640.0, 648.0, 710.0]",8.0,horstify,"[514.0, 525.0, 590.0, 447.0]",4.0
+securify,0x143E8bD26D95b230680C25300F93eF56F86eCCAC,RestrictedWrite,Violation,"[368.0, 379.0, 445.0, 452.0, 625.0, 683.0, 694.0]",7.0,horstify,"[368.0, 625.0, 452.0, 379.0, 445.0]",5.0
+securify,0x45e42d659d9f9466cd5df622506033145a9b89bc,TimestampDepend,Safety,"[1290.0, 1358.0, 1530.0]",3.0,horstify,"[1530.0, 1290.0]",2.0
+securify,0x45e42d659d9f9466cd5df622506033145a9b89bc,RestrictedWrite,Violation,"[540.0, 632.0]",2.0,horstify,[],0.0
+securify,0x9448b35b4c9eea695dedff285e0cd8bc6c65e2b1,RestrictedWrite,Violation,"[253.0, 464.0, 488.0, 673.0, 1382.0, 1203.0, 1488.0, 1312.0, 1324.0, 1508.0]",10.0,horstify,"[464.0, 1488.0, 673.0, 1203.0, 488.0, 1324.0, 253.0]",7.0
+securify,0x5e49ec3fbd55e7b86a5a5b1a32c73aa44b42b4af,RestrictedWrite,Violation,"[785.0, 849.0, 890.0, 897.0, 904.0, 911.0, 921.0]",7.0,horstify,[785.0],1.0
+securify,0x0e08f0daee46e772eee7999c5b6d7d0401d8d72b,TimestampDepend,Safety,"[128.0, 201.0]",2.0,horstify,[201.0],1.0
+securify,0x062524205ca7ecf27f4a851edec93c7ad72f427b,RestrictedWrite,Violation,"[398.0, 580.0, 644.0, 655.0, 738.0, 777.0, 784.0]",7.0,horstify,"[738.0, 580.0, 644.0, 398.0, 655.0]",5.0
+securify,0x2a28cc275b458019910e3b8b8ee58f17eb6d38c8,RestrictedWrite,Violation,"[234.0, 1894.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1894.0, 234.0]",3.0
+securify,0x477bb914dc811282675eadb05a1c272132429bbb,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xa0285193e366a634fd9639d650b2115d77681a37,RestrictedWrite,Violation,"[624.0, 688.0, 699.0, 764.0, 801.0, 818.0, 826.0, 843.0]",8.0,horstify,"[688.0, 624.0, 699.0, 764.0]",4.0
+securify,0x883ee0b0ce06f11cb215c7e2299f1948b247784b,RestrictedWrite,Violation,"[447.0, 514.0, 525.0, 590.0, 629.0, 642.0, 654.0, 709.0]",8.0,horstify,"[514.0, 525.0, 590.0, 447.0]",4.0
+securify,0x5a437D94843541d5cB83221a4A4B253dE30B97b7,RestrictedWrite,Violation,"[539.0, 603.0, 614.0, 697.0, 734.0, 753.0, 789.0, 803.0, 820.0]",9.0,horstify,"[614.0, 697.0, 539.0, 603.0]",4.0
+securify,0x8ea6c8077d6316b46e449aec8fb60a606cf50eea,RestrictedWrite,Violation,"[190.0, 338.0, 594.0, 711.0]",4.0,horstify,[190.0],1.0
+securify,0x15e745a2e3b677ec6421291b212d3917b3738dee,TimestampDepend,Safety,"[150.0, 418.0, 614.0]",3.0,horstify,[150.0],1.0
+securify,0xCF0c7e3Ad3b2C82BdDd286A301aFaAFd185F30EC,TimestampDepend,Safety,"[167.0, 213.0, 383.0, 430.0, 593.0]",5.0,horstify,"[167.0, 383.0]",2.0
+securify,0x1213c29b5e1a6f33e0d044f850a57b665e3cde21,RestrictedWrite,Violation,"[542.0, 606.0, 617.0, 700.0, 737.0, 756.0, 792.0, 806.0, 823.0]",9.0,horstify,"[617.0, 700.0, 542.0, 606.0]",4.0
+securify,0x60f0ee673e413e1c134d1497eeecce8ddd2fdd74,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0x6aC85d0408044AfB786a6d631d4D3426Ce0E031a,TimestampDepend,Safety,"[201.0, 404.0, 451.0, 876.0]",4.0,horstify,[201.0],1.0
+securify,0xabea74917283a8662865894c7d6cfecafd85ceb6,TimestampDepend,Safety,"[300.0, 345.0, 397.0, 447.0, 494.0]",5.0,horstify,[300.0],1.0
+securify,0x93c9cce56a35a5bba00501a8dcd6ea1392ff3dfd,TimestampDepend,Safety,"[917.0, 1074.0, 1117.0, 295.0]",4.0,horstify,"[1074.0, 917.0, 295.0]",3.0
+securify,0x93c9cce56a35a5bba00501a8dcd6ea1392ff3dfd,RestrictedWrite,Violation,"[416.0, 369.0]",2.0,horstify,[416.0],1.0
+securify,0x85c84c949b1c29c85b777f2873a19450dbb1a057,RestrictedWrite,Violation,"[494.0, 552.0, 635.0, 656.0, 667.0, 715.0, 734.0, 854.0, 864.0]",9.0,horstify,"[656.0, 552.0, 667.0, 635.0, 734.0, 494.0]",6.0
+securify,0x9e2a68ed6b854e2e55433b5ec8f471c7b274df51,RestrictedWrite,Violation,"[578.0, 642.0, 653.0, 718.0, 755.0, 772.0, 780.0, 797.0]",8.0,horstify,"[642.0, 578.0, 653.0, 718.0]",4.0
+securify,0x98f9e314a874e17c77e7ec24f228649f21a52368,TimestampDepend,Safety,"[2766.0, 2834.0, 240.0, 500.0, 667.0]",5.0,horstify,"[240.0, 500.0, 667.0, 2766.0]",4.0
+securify,0x51170b18bcA7896B49c52Dcc18E66e5C921e100F,RestrictedWrite,Violation,"[383.0, 386.0, 465.0, 476.0, 809.0, 852.0, 859.0, 867.0, 1116.0, 1165.0]",10.0,horstify,"[465.0, 386.0, 809.0, 476.0, 383.0]",5.0
+securify,0xE94b04a0FeD112f3664e45adb2B8915693dD5FF3,TimestampDepend,Safety,"[126.0, 172.0, 343.0, 390.0]",4.0,horstify,[126.0],1.0
+securify,0x2a53F42aD8BbA138C21b50a4e5711f18381A61E9,RestrictedWrite,Violation,"[466.0, 530.0, 541.0, 624.0, 661.0, 670.0]",6.0,horstify,"[624.0, 530.0, 466.0, 541.0]",4.0
+securify,0x5f0d0c4c159970fda5adc93a6b7f17706fd3255c,TimestampDepend,Safety,"[120.0, 176.0, 210.0]",3.0,horstify,[120.0],1.0
+securify,0x75f398D5B9E92D17EE307268c28779DA26508F54,TimestampDepend,Safety,"[593.0, 664.0, 350.0, 422.0, 510.0]",5.0,horstify,"[593.0, 664.0]",2.0
+securify,0x5e3741d9faa0f62660bdecdd3ac43c97c83a9881,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0xe736091fc36f1ad476f5e4e03e4425940822d3ba,TimestampDepend,Safety,"[248.0, 745.0, 869.0, 1021.0]",4.0,horstify,"[248.0, 745.0]",2.0
+securify,0xe736091fc36f1ad476f5e4e03e4425940822d3ba,RestrictedWrite,Violation,"[636.0, 1084.0, 1098.0]",3.0,horstify,[636.0],1.0
+securify,0x9e611784170b297091de56eb50162548d9b54d87,TimestampDepend,Safety,"[667.0, 1205.0]",2.0,horstify,[667.0],1.0
+securify,0x9df71e0a7566f607eb03550331fbef13b61dc29f,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xcab39d1c7383fc9682a1221bffacbce2bdd967ca,TimestampDepend,Safety,"[951.0, 1844.0]",2.0,horstify,[951.0],1.0
+securify,0x18429dedafbb65443edf60402294df5c01aee1da,TimestampDepend,Safety,"[3379.0, 3453.0, 3539.0, 347.0]",4.0,horstify,"[3379.0, 3539.0, 347.0]",3.0
+securify,0x18429dedafbb65443edf60402294df5c01aee1da,RestrictedWrite,Violation,"[2876.0, 2972.0, 2636.0, 2985.0, 3007.0, 3043.0, 3128.0, 3233.0, 3141.0, 3163.0, 3199.0]",11.0,horstify,"[2985.0, 2876.0, 2636.0, 2972.0]",4.0
+securify,0x1b725d9bcbd26765fe4836d850631037dfb37e0a,TimestampDepend,Safety,[198.0],1.0,horstify,[],0.0
+securify,0xbe181da06d93867af0a3ffadcebe345ec35dae4e,RestrictedWrite,Violation,"[447.0, 514.0, 525.0, 590.0, 629.0, 637.0, 645.0, 708.0]",8.0,horstify,"[514.0, 525.0, 590.0, 447.0]",4.0
+securify,0x817b0a0855fa6e1e0b9a994979b3d5bf864d9560,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xaf2b8e6114da000176c506f77b173251c16b511d,TimestampDepend,Safety,"[636.0, 1209.0]",2.0,horstify,[636.0],1.0
+securify,0x50ae8d7c70c33d1f40b36c75fe9f560646134dd5,TimestampDepend,Safety,"[3927.0, 4001.0, 4087.0, 559.0]",4.0,horstify,"[4087.0, 559.0]",2.0
+securify,0x7c4a690585ffe89c01aebfce188b9bec8def9e8d,RestrictedWrite,Violation,"[966.0, 978.0, 982.0, 992.0, 1056.0, 1065.0, 1078.0, 1444.0, 1507.0, 1529.0, 1533.0, 1147.0, 1156.0, 1167.0, 1178.0, 1947.0, 2014.0, 2079.0, 2125.0, 2170.0, 2222.0, 2230.0, 2233.0, 2242.0]",24.0,horstify,"[992.0, 1056.0, 1507.0, 1156.0, 1444.0, 966.0, 1065.0, 1167.0, 978.0, 982.0, 1078.0, 1529.0, 1178.0, 1147.0, 1533.0]",15.0
+securify,0xB071e5c53094Cabb971E98EBA3B1A86BE555c943,TimestampDepend,Safety,"[144.0, 277.0, 498.0, 587.0, 647.0, 688.0]",6.0,horstify,"[144.0, 498.0]",2.0
+securify,0x7011f3edc7fa43c81440f9f43a6458174113b162,TimestampDepend,Safety,"[1155.0, 1233.0, 2947.0, 1315.0, 2480.0, 2732.0]",6.0,horstify,"[1233.0, 2947.0, 1155.0, 1315.0]",4.0
+securify,0x7011f3edc7fa43c81440f9f43a6458174113b162,RestrictedWrite,Violation,"[1349.0, 1418.0, 1431.0, 1676.0, 1721.0, 1478.0, 1767.0, 1531.0, 1544.0, 1591.0, 1849.0, 1903.0, 1948.0, 2071.0, 2147.0, 2232.0, 2263.0, 1994.0]",18.0,horstify,[1349.0],1.0
+securify,0x2e1cff135ca6bbc0012a01fa246a0a39aeb10d2d,TimestampDepend,Safety,"[917.0, 1074.0, 1117.0, 295.0]",4.0,horstify,"[1074.0, 917.0, 295.0]",3.0
+securify,0x2e1cff135ca6bbc0012a01fa246a0a39aeb10d2d,RestrictedWrite,Violation,"[416.0, 369.0]",2.0,horstify,[416.0],1.0
+securify,0x754ec4b04c10a0373e849dc61f3112c94393e63d,TimestampDepend,Safety,"[297.0, 432.0, 529.0, 618.0, 898.0, 987.0, 1234.0, 1323.0, 1516.0, 1706.0, 1882.0, 1968.0, 2202.0, 2337.0, 2434.0, 2523.0, 2720.0, 2831.0, 2954.0, 3147.0, 3237.0, 3326.0]",22.0,horstify,"[2720.0, 898.0, 1234.0, 1882.0, 1706.0, 3147.0, 1516.0]",7.0
+securify,0xa39fcb48adf288f143459d57a1a0756718c919ae,RestrictedWrite,Violation,"[370.0, 531.0, 595.0, 606.0, 671.0, 708.0, 731.0, 740.0, 757.0]",9.0,horstify,"[370.0, 595.0, 531.0, 606.0, 671.0]",5.0
+securify,0x911d71eed45dbc20059004f8476fe149105bf1dc,RestrictedWrite,Violation,"[993.0, 1055.0, 1072.0]",3.0,horstify,"[1072.0, 993.0]",2.0
+securify,0x89c2352Cb600df56fe4BFB5882caAdEF3E96213f,TimestampDepend,Safety,[674.0],1.0,horstify,[],0.0
+securify,0x89c2352Cb600df56fe4BFB5882caAdEF3E96213f,RestrictedWrite,Violation,"[256.0, 331.0, 337.0, 408.0, 459.0]",5.0,horstify,"[256.0, 337.0, 408.0, 331.0]",4.0
+securify,0xf77089f2F00fca83501705b711Cbb10a0De77628,TimestampDepend,Safety,"[1388.0, 1455.0, 1578.0]",3.0,horstify,"[1578.0, 1388.0]",2.0
+securify,0xe3282094d332d26f7Dfca853899eC1736f0295ce,TimestampDepend,Safety,"[270.0, 440.0]",2.0,horstify,[270.0],0.0
+securify,0xe3282094d332d26f7Dfca853899eC1736f0295ce,RestrictedWrite,Violation,"[353.0, 504.0]",2.0,horstify,[353.0],1.0
+securify,0x4398a4a10347d8f18029c07853a7a689eebbb925,RestrictedWrite,Violation,"[624.0, 688.0, 699.0, 782.0, 819.0, 823.0, 842.0, 878.0, 892.0, 909.0]",10.0,horstify,"[624.0, 688.0, 699.0, 782.0]",4.0
+securify,0x40ebf2d6e998a76a848c41908733b26e04adffe2,TimestampDepend,Safety,"[131.0, 189.0]",2.0,horstify,[131.0],1.0
+securify,0x14ba17c52e4c2ccbb95de1d2bfff002398f515a7,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xb9068705fbdc3b06c11763d2c260be682e6844ff,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0xd3f3eb105daa3712eda7709f59ac0ec0d2d202b5,RestrictedWrite,Violation,"[234.0, 1933.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 234.0, 1933.0]",3.0
+securify,0x70E2475B7DA322D4a379e43cD7495C63C055192A,TimestampDepend,Safety,[654.0],1.0,horstify,[],0.0
+securify,0x70E2475B7DA322D4a379e43cD7495C63C055192A,RestrictedWrite,Violation,"[228.0, 303.0, 311.0, 382.0, 436.0]",5.0,horstify,"[228.0, 311.0, 382.0, 303.0]",4.0
+securify,0x5be9887d5b4336cb762a9d73335991a6ff8ce981,RestrictedWrite,Violation,"[199.0, 944.0, 2182.0, 2337.0, 2425.0, 2629.0, 2666.0]",7.0,horstify,"[400.0, 2337.0, 2629.0, 2182.0, 2425.0, 2666.0]",6.0
+securify,0x55d035Ba1F4Ae932Cf98125b93D830d9858cd39F,TimestampDepend,Safety,"[340.0, 842.0, 947.0]",3.0,horstify,"[340.0, 842.0]",2.0
+securify,0x55d035Ba1F4Ae932Cf98125b93D830d9858cd39F,RestrictedWrite,Violation,"[390.0, 446.0, 662.0, 780.0, 793.0, 958.0, 531.0, 629.0, 638.0, 768.0]",10.0,horstify,[390.0],1.0
+securify,0x1F36f2249eC89266Ad4EE4351538148aaEBc72e8,RestrictedWrite,Violation,"[1305.0, 1491.0, 1499.0]",3.0,horstify,[1305.0],1.0
+securify,0x46a4787091835af08b9b9b99dcdadfb0ca257e06,TimestampDepend,Safety,"[896.0, 1772.0, 1884.0, 2096.0, 2172.0, 1989.0, 2020.0]",7.0,horstify,"[2096.0, 896.0, 2020.0, 1989.0, 1772.0, 2172.0]",6.0
+securify,0x66342e803943929dc47bca1d625f42c7c725b049,RestrictedWrite,Violation,"[763.0, 777.0, 783.0, 808.0, 1083.0, 1123.0, 1126.0, 1143.0, 1213.0, 1222.0, 1229.0, 1236.0, 1392.0, 1466.0, 1506.0, 623.0, 674.0, 709.0, 740.0]",19.0,horstify,"[674.0, 1506.0, 1123.0, 1126.0, 1222.0, 808.0, 777.0, 1229.0, 623.0, 783.0, 1392.0, 1236.0, 1143.0, 1466.0, 1083.0, 763.0, 1213.0]",17.0
+securify,0xfd981838c1cc9b534b938c56b1c2123bdc700a32,TimestampDepend,Safety,"[1950.0, 2018.0, 229.0, 496.0]",4.0,horstify,"[496.0, 229.0, 1950.0]",3.0
+securify,0x2dc0170450e66af2d3f5c56aa0b20ec4a254902e,TimestampDepend,Safety,"[3071.0, 3145.0, 391.0, 3326.0]",4.0,horstify,"[391.0, 3326.0, 3071.0]",3.0
+securify,0xd1c37dffd4ef36867c5bd7e59566358ea3d21e63,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x341e790174e3a4d35b65fdc067b6b5634a61caea,TimestampDepend,Safety,"[125.0, 171.0, 284.0, 331.0]",4.0,horstify,[],0.0
+securify,0x5e84c1a6e8b7cd42041004de5cd911d537c5c007,RestrictedWrite,Violation,"[391.0, 576.0, 640.0, 651.0, 734.0, 771.0, 790.0, 826.0, 840.0, 857.0]",10.0,horstify,"[640.0, 576.0, 391.0, 651.0, 734.0]",5.0
+securify,0xb08b08b9c4f91e68729ca471d77e0a525071db89,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xcff9cb72d19c10df754ae7be6d280e379cdb2354,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 763.0, 799.0, 813.0, 830.0]",9.0,horstify,"[624.0, 707.0, 549.0, 613.0]",4.0
+securify,0x16A4ff536001405f2B0d7ddAfC79f6A10D024640,TimestampDepend,Safety,[649.0],1.0,horstify,[],0.0
+securify,0x16A4ff536001405f2B0d7ddAfC79f6A10D024640,RestrictedWrite,Violation,"[231.0, 306.0, 312.0, 383.0, 434.0]",5.0,horstify,"[306.0, 231.0, 312.0, 383.0]",4.0
+securify,0xbFb0Cfd13dbB56c2dbf69EAe33255f0EF1fC7955,RestrictedWrite,Violation,"[3029.0, 3094.0, 3113.0]",3.0,horstify,"[3029.0, 3113.0]",2.0
+securify,0x723dff0e27cc38b80556f5e05dfdbdcb721654d7,TimestampDepend,Safety,"[282.0, 624.0, 732.0, 865.0, 998.0, 1128.0]",6.0,horstify,[282.0],1.0
+securify,0x723dff0e27cc38b80556f5e05dfdbdcb721654d7,RestrictedWrite,Violation,"[1966.0, 2031.0, 1997.0, 393.0, 423.0, 436.0, 449.0, 462.0, 528.0]",9.0,horstify,"[1997.0, 1966.0, 2031.0]",3.0
+securify,0x85169e1f0d8c2f27dd44f1cfbb81172dfeafe7c1,RestrictedWrite,Violation,"[275.0, 2670.0, 1766.0, 1668.0]",4.0,horstify,"[275.0, 1766.0, 2670.0]",3.0
+securify,0xd41f3b51e0c2d825a1178582d27c84dbfe48d1af,TimestampDepend,Safety,"[1970.0, 2044.0, 226.0]",3.0,horstify,"[226.0, 1970.0]",2.0
+securify,0x8a70cf25cf32e728be9e30c20b2781f60cb0ed6d,TimestampDepend,Safety,"[2786.0, 2860.0, 252.0, 577.0, 749.0]",5.0,horstify,"[577.0, 2786.0, 252.0, 749.0]",4.0
+securify,0xc5B2508E878af367Ba4957BDBEb2bBc6DA5BB349,TimestampDepend,Safety,"[120.0, 164.0, 209.0, 243.0]",4.0,horstify,[120.0],1.0
+securify,0x9c9dc2b707a99ae4b6795538ac6bf4f6d4842830,TimestampDepend,Safety,"[145.0, 526.0, 615.0, 704.0, 405.0]",5.0,horstify,"[145.0, 405.0]",2.0
+securify,0x63dd6f40007731eb7e70a7ae43b55c0fb2090c99,TimestampDepend,Safety,"[267.0, 487.0, 596.0, 938.0, 2341.0, 1133.0, 1483.0, 1623.0, 1827.0, 2216.0]",10.0,horstify,"[2341.0, 487.0, 938.0, 267.0, 1133.0]",5.0
+securify,0xe7c8635bc387994069f7b7f25b89534c67727a01,TimestampDepend,Safety,"[154.0, 268.0, 544.0, 735.0, 658.0, 864.0]",6.0,horstify,"[544.0, 154.0, 735.0]",3.0
+securify,0x111cc94a5dabdf192c5106fadc844a98b0f56be0,TimestampDepend,Safety,"[243.0, 397.0, 444.0, 729.0, 853.0]",5.0,horstify,"[243.0, 853.0]",2.0
+securify,0x9ab2b9bd7c70ba12757eadcda5a9626ac247fadf,TimestampDepend,Safety,"[439.0, 493.0, 536.0, 583.0, 946.0]",5.0,horstify,[439.0],1.0
+securify,0x9ab2b9bd7c70ba12757eadcda5a9626ac247fadf,RestrictedWrite,Violation,"[639.0, 689.0, 696.0, 793.0, 851.0, 858.0]",6.0,horstify,"[689.0, 696.0, 639.0]",3.0
+securify,0xA14d964FB52BF333888D162E9CAF8cC7F090CDe4,TimestampDepend,Safety,"[172.0, 218.0, 393.0, 440.0, 603.0]",5.0,horstify,"[393.0, 172.0]",2.0
+securify,0x33A8eA1c8C6294C9F65f3DAd7CA7f037BD09F951,RestrictedWrite,Violation,"[520.0, 530.0, 533.0, 595.0, 606.0, 769.0, 824.0, 832.0, 848.0, 869.0, 883.0, 933.0, 1049.0, 1052.0]",14.0,horstify,"[769.0, 530.0, 595.0, 533.0, 520.0, 606.0]",6.0
+securify,0x498e950892260b0e9dfd5895d7501f340e92d263,RestrictedWrite,Violation,"[410.0, 363.0]",2.0,horstify,[410.0],1.0
+securify,0x015A06a433353f8db634dF4eDdF0C109882A15AB,TimestampDepend,Safety,"[867.0, 956.0, 1209.0]",3.0,horstify,"[867.0, 1209.0]",2.0
+securify,0x5f5d7147adb6ed31a2ca03ce3defb070a3be0ebb,TimestampDepend,Safety,"[358.0, 447.0, 685.0]",3.0,horstify,"[358.0, 685.0]",2.0
+securify,0x86c93259896b20e45262dac7499a83a2cad23fe0,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x84d50ebf4737331fb41ff9e3c6c324262c5b661c,TimestampDepend,Safety,"[969.0, 1843.0]",2.0,horstify,[969.0],1.0
+securify,0x6Ba4313d6B01efD3C81224a1d34794B2A0b0CF76,TimestampDepend,Safety,"[475.0, 1160.0, 1413.0, 807.0]",4.0,horstify,"[1413.0, 1160.0, 475.0]",3.0
+securify,0x02268047f5c77a6a533619773474d1a6e510443f,TimestampDepend,Safety,[112.0],1.0,horstify,[112.0],0.0
+securify,0xC4216D17a72BD49E404Fe396bB93c9Cd8Cf3e881,TimestampDepend,Safety,"[165.0, 343.0, 508.0, 571.0, 699.0]",5.0,horstify,[],0.0
+securify,0x7f64e2913511ceb3301f0515548ab7539735182b,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x77eec19c8ba79b1c7c79311ec810cbf88d924751,TimestampDepend,Safety,"[4903.0, 4977.0, 405.0, 528.0, 888.0, 1219.0, 5290.0]",7.0,horstify,"[528.0, 1219.0, 405.0, 4903.0, 888.0, 5290.0]",6.0
+securify,0xa333604269d38faec526d90db381017009fe4c18,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x4b19f307dda1be6bc17c999bc29e24633155c990,TimestampDepend,Safety,"[1704.0, 1729.0, 1943.0, 1968.0, 2300.0, 2325.0, 2872.0, 2897.0, 3474.0, 3499.0, 4099.0, 4124.0, 4374.0, 760.0, 1237.0, 1369.0, 1581.0, 1034.0]",18.0,horstify,"[1943.0, 760.0, 1704.0, 1369.0, 2300.0]",5.0
+securify,0x4b19f307dda1be6bc17c999bc29e24633155c990,RestrictedWrite,Violation,"[3093.0, 3638.0, 3106.0, 3131.0, 4443.0, 3177.0]",6.0,horstify,"[3106.0, 3093.0, 3638.0, 3177.0, 3131.0]",5.0
+securify,0x900e66fe952998ebe212d4a7def0936387142e2a,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x37c0f21f9dc15be832d06a3c79ee45d16f9ed1d6,TimestampDepend,Safety,"[528.0, 743.0, 1050.0, 1300.0, 1392.0, 1484.0, 1765.0, 1889.0, 1978.0, 2068.0, 2206.0, 2296.0, 2386.0, 2456.0]",14.0,horstify,"[528.0, 2386.0, 1300.0, 1765.0, 743.0, 1050.0, 1978.0, 2206.0]",8.0
+securify,0x7f9af66163461009e9a4c57f6d3c6421bc47a663,TimestampDepend,Safety,"[110.0, 178.0]",2.0,horstify,[110.0],1.0
+securify,0x019d7e5ae8d2ba9a292244311dc7355058ab1b08,TimestampDepend,Safety,"[1463.0, 1647.0]",2.0,horstify,[1647.0],1.0
+securify,0xc1caec30b787711108957660a3f9306a5d967f66,TimestampDepend,Safety,"[597.0, 660.0, 845.0]",3.0,horstify,"[597.0, 845.0]",2.0
+securify,0x44691b39d1a75dc4e0a0346cbb15e310e6ed1e86,TimestampDepend,Safety,"[437.0, 824.0, 620.0, 1169.0]",4.0,horstify,"[437.0, 824.0, 620.0]",3.0
+securify,0xabcdd0dbc5ba15804f5de963bd60491e48c3ef0b,TimestampDepend,Safety,"[945.0, 1834.0, 2189.0]",3.0,horstify,[945.0],1.0
+securify,0x8a772004af0b8fca5e7093c6f277ba7b0e8fa97a,RestrictedWrite,Violation,"[336.0, 468.0, 489.0, 1132.0, 1157.0, 1248.0, 1116.0, 1273.0, 1298.0]",9.0,horstify,"[336.0, 1248.0, 1298.0, 468.0, 1273.0, 1116.0, 1132.0]",7.0
+securify,0x89d64bc7e46bdc49a89652ae9bb167418cbad62e,TimestampDepend,Safety,"[914.0, 1875.0, 1121.0, 1157.0]",4.0,horstify,[914.0],1.0
+securify,0x6fd8e0e34117c95e568f8938716013f948e0b2f9,RestrictedWrite,Violation,"[1885.0, 1890.0, 1893.0, 1710.0, 1716.0, 1722.0, 1836.0, 1843.0, 1846.0, 1861.0, 1125.0, 841.0, 1407.0, 1470.0, 1563.0, 1566.0, 1338.0, 1343.0]",18.0,horstify,"[1890.0, 1861.0, 1893.0, 1125.0, 841.0, 1836.0, 1710.0, 1843.0, 1716.0, 1846.0, 1722.0, 1885.0, 1407.0]",13.0
+securify,0x559b52b6a30Ba913A7e8F85C4A6Aa443a0FE66ab,TimestampDepend,Safety,"[270.0, 440.0]",2.0,horstify,[270.0],0.0
+securify,0x559b52b6a30Ba913A7e8F85C4A6Aa443a0FE66ab,RestrictedWrite,Violation,"[353.0, 504.0]",2.0,horstify,[353.0],1.0
+securify,0x5ed5b9a13af4581524ebb7a0701bc4366d002289,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0xa259e6bcade86c770cb5214c789ee107662831a6,RestrictedWrite,Violation,"[459.0, 469.0, 472.0, 552.0, 563.0, 641.0, 678.0, 692.0, 700.0, 708.0, 769.0, 778.0, 801.0, 815.0]",14.0,horstify,"[641.0, 563.0, 469.0, 552.0, 472.0, 459.0]",6.0
+securify,0x479bed65685b0672ec2ff8b0a8fbe06b4ce0a710,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x32304cdbe41fe4f1c48b08356414a52957d22d3b,TimestampDepend,Safety,"[309.0, 452.0, 817.0, 1020.0]",4.0,horstify,[309.0],1.0
+securify,0x51dce38369b7d57d367fa1b738723a626f15b8ff,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0xbf4ed7b27f1d666546e30d74d50d173d20bca754,TimestampDepend,Safety,"[402.0, 559.0, 622.0, 772.0, 969.0, 1039.0]",6.0,horstify,"[402.0, 772.0]",2.0
+securify,0xd12d8F8dFa54F1578B2177F99B2e282367b66B13,RestrictedWrite,Violation,"[539.0, 603.0, 614.0, 697.0, 734.0, 743.0]",6.0,horstify,"[614.0, 697.0, 603.0, 539.0]",4.0
+securify,0xa83c4a6d0418074655bdbe74fed8435c46c19f66,RestrictedWrite,Violation,"[542.0, 606.0, 617.0, 700.0, 737.0, 782.0, 791.0, 808.0]",8.0,horstify,"[617.0, 700.0, 606.0, 542.0]",4.0
+securify,0x0444f06a52320af2df7e60d1923080002838ce93,TimestampDepend,Safety,"[805.0, 894.0]",2.0,horstify,[805.0],1.0
+securify,0x0444f06a52320af2df7e60d1923080002838ce93,RestrictedWrite,Violation,"[366.0, 424.0, 641.0, 759.0, 772.0, 905.0, 509.0, 607.0, 616.0, 747.0]",10.0,horstify,[366.0],1.0
+securify,0xe3c61a3bff7cb03ddd422258006fddd5ba1ed0fe,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0xbb9854BFD082c48B4D426aC6A2a152B01326f46F,RestrictedWrite,Violation,"[497.0, 561.0, 572.0, 637.0, 674.0, 697.0, 702.0, 719.0]",8.0,horstify,"[497.0, 561.0, 572.0, 637.0]",4.0
+securify,0x44e3d147188de99a1ff0799e77c03724c2032ad6,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xb2048d829482dbc9baf6951c28909e5c49686041,RestrictedWrite,Violation,"[234.0, 1926.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1926.0, 234.0]",3.0
+securify,0xCE3b5fFca16ffF926c890f0885A3e90cEb89db0A,TimestampDepend,Safety,"[339.0, 1848.0, 3116.0, 3754.0, 1955.0, 1473.0, 2086.0]",7.0,horstify,"[1473.0, 339.0, 1848.0, 3754.0, 3116.0]",5.0
+securify,0xf7070fc72e2b92c6309785a39338d7c919a3cf4a,TimestampDepend,Safety,[729.0],1.0,horstify,[],0.0
+securify,0xf7070fc72e2b92c6309785a39338d7c919a3cf4a,RestrictedWrite,Violation,"[313.0, 388.0, 394.0, 465.0, 514.0]",5.0,horstify,"[465.0, 388.0, 313.0, 394.0]",4.0
+securify,0xf236d15aa8164626e3457cd38e69d7f46f95eeb9,TimestampDepend,Safety,"[145.0, 462.0, 513.0, 624.0, 410.0]",5.0,horstify,"[145.0, 410.0]",2.0
+securify,0x5dc8108fc79018113a58328f5283b376b83922ef,TimestampDepend,Safety,"[126.0, 181.0, 292.0, 349.0]",4.0,horstify,[126.0],1.0
+securify,0x566c1023aaF10180B4EB9533050fbf91D7792aF1,RestrictedWrite,Violation,"[515.0, 525.0, 528.0, 590.0, 601.0, 764.0, 819.0, 827.0, 843.0, 864.0, 878.0, 928.0, 1035.0, 1038.0]",14.0,horstify,"[528.0, 515.0, 601.0, 764.0, 525.0, 590.0]",6.0
+securify,0x8cd68336ad5092110e79aae318731e1d60a331ae,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x3aaa5474a09804b08120e6e33bfc433367ab238c,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0x5ae14c0101e0a40c709340592f1f1c052ef4ab92,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0x1ca4a86bba124426507d1ef67ad271cc5a02820a,TimestampDepend,Safety,"[152.0, 299.0, 547.0, 459.0]",4.0,horstify,[],0.0
+securify,0x938875f7a161ce2f4c314ba1bb3172dbf52ebb3d,TimestampDepend,Safety,"[943.0, 1032.0, 1121.0]",3.0,horstify,[943.0],1.0
+securify,0x3325439082ff8ba7371dfdaa1af297bbfcac21b2,RestrictedWrite,Violation,"[355.0, 429.0, 440.0, 536.0, 590.0, 600.0, 766.0, 336.0]",8.0,horstify,[],0.0
+securify,0xa35fc4d3ea15e0d9272dc181ee1c2761d5d0cabd,TimestampDepend,Safety,"[153.0, 427.0, 572.0, 1073.0]",4.0,horstify,"[153.0, 427.0]",2.0
+securify,0xaa1a6e3e6ef20068f7f8d8c835d2d22fd5116444,TimestampDepend,Safety,"[126.0, 172.0, 283.0, 330.0]",4.0,horstify,[126.0],1.0
+securify,0xaedde4941e7eac04f97be3a89af50a454d7c5f89,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0xae8a616011274cde89dd86e2f40b73c449e2f45b,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x6f576af2dba6bf6308caf8feec3fc3d07501c018,TimestampDepend,Safety,"[166.0, 265.0, 315.0, 415.0, 553.0, 600.0]",6.0,horstify,"[166.0, 415.0]",2.0
+securify,0xBe46324018124B2d604c2f3eaE91D3De9b388b09,RestrictedWrite,Violation,"[1060.0, 1135.0, 1142.0, 1151.0, 1222.0, 1265.0, 1288.0, 1308.0, 1329.0, 1350.0, 1371.0, 1393.0, 1415.0, 1468.0, 1496.0, 1526.0]",16.0,horstify,"[1060.0, 1222.0, 1142.0, 1135.0, 1151.0]",5.0
+securify,0x125c0260feec92471d1a144f3cdce185a565f374,TimestampDepend,Safety,"[2777.0, 2851.0, 3015.0, 357.0]",4.0,horstify,"[357.0, 3015.0]",2.0
+securify,0xD8912C10681D8B21Fd3742244f44658dBA12264E,TimestampDepend,Safety,"[1388.0, 1455.0, 1578.0]",3.0,horstify,"[1578.0, 1388.0]",2.0
+securify,0x3bb2bb5c6c9c9b7f4ef430b47dc7e026310042ea,TimestampDepend,Safety,"[391.0, 821.0, 1144.0, 1457.0, 3266.0, 3742.0, 2667.0, 2731.0, 2849.0, 3484.0, 3631.0, 2054.0, 4123.0, 4187.0, 4305.0, 4814.0, 4878.0, 4996.0, 2407.0]",19.0,horstify,"[1457.0, 3266.0, 821.0, 2054.0, 1144.0, 2667.0, 4123.0, 4814.0]",8.0
+securify,0x14227871abbd0359facfc893a055d4068f4f14ee,RestrictedWrite,Violation,"[727.0, 791.0, 832.0, 839.0, 846.0, 853.0, 863.0]",7.0,horstify,[727.0],1.0
+securify,0x35bd607db942fe1f10ce12b309e3a67e16660fe1,TimestampDepend,Safety,"[1413.0, 2809.0, 4124.0, 4257.0, 4488.0, 3272.0, 1922.0, 2065.0]",8.0,horstify,[],0.0
+securify,0x35bd607db942fe1f10ce12b309e3a67e16660fe1,RestrictedWrite,Violation,"[4299.0, 2449.0, 3052.0, 4540.0, 1669.0, 4595.0, 3622.0, 1783.0, 2167.0]",9.0,horstify,[],0.0
+securify,0x3795aed9feadc5c0064a0c3ea529e46d41a2f87a,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xfac50f760d114de38bf0a6d44f31a9c22f778db3,TimestampDepend,Safety,"[747.0, 1320.0]",2.0,horstify,[747.0],1.0
+securify,0x1e2e3cc6ce2e87a9aa1684e948e41a17c5ac3ecc,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x90aa6fb2c2ab2c9e3fd5634c054d636c708cd5f3,TimestampDepend,Safety,"[3174.0, 3248.0, 314.0]",3.0,horstify,"[3174.0, 314.0]",2.0
+securify,0x90aa6fb2c2ab2c9e3fd5634c054d636c708cd5f3,RestrictedWrite,Violation,"[2671.0, 2767.0, 2431.0, 2780.0, 2802.0, 2838.0, 2923.0, 3028.0, 2936.0, 2958.0, 2994.0]",11.0,horstify,"[2780.0, 2767.0, 2431.0, 2671.0]",4.0
+securify,0x83651a62b632c261442f396ad7202fe2a4995e3a,TimestampDepend,Safety,"[141.0, 717.0, 1276.0, 822.0, 1197.0, 1592.0]",6.0,horstify,"[822.0, 1276.0, 141.0, 717.0]",4.0
+securify,0x9ffa45c5943a0203ee462c48c8b97064abbe28f3,TimestampDepend,Safety,"[667.0, 1205.0]",2.0,horstify,[667.0],1.0
+securify,0x29e6495732f0550d7d074770ca5a1071b044a2ef,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xbf7316fab5c8cfbda5e763a5a1f94c4e0ce7ec37,TimestampDepend,Safety,"[300.0, 387.0, 656.0, 749.0, 1028.0, 1115.0, 1332.0, 1425.0, 1677.0, 1764.0, 2487.0, 2594.0, 2762.0, 3382.0, 3460.0, 3565.0, 3824.0, 3922.0, 1896.0, 2032.0, 2195.0, 2291.0, 2894.0, 2991.0]",24.0,horstify,"[1028.0, 1896.0, 300.0, 1677.0]",4.0
+securify,0x5965c4ee0e04ab0aa480527b7c91be8deca47f9c,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0x8f4e3d448a318c1dec52b3f22d77132a39c62025,TimestampDepend,Safety,"[141.0, 204.0]",2.0,horstify,"[204.0, 141.0]",1.0
+securify,0x60b1bfaa999ab532df3ab804b43ed549a8636501,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0x33a683a7af55942220e4efec514da11b5dc47996,TimestampDepend,Safety,"[896.0, 1794.0, 1906.0, 2116.0, 2192.0, 2009.0, 2040.0]",7.0,horstify,"[2192.0, 896.0, 1794.0, 2116.0, 2040.0, 2009.0]",6.0
+securify,0x9b37508b5f859682382d8cb6467a5c7fc5d02e9c,TimestampDepend,Safety,"[396.0, 1311.0, 1413.0, 1466.0, 1243.0, 945.0, 2045.0]",7.0,horstify,[],0.0
+securify,0xe1e8eabd8fcf08ed50ae1f2ed4710c1a1f38542c,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0xaffd8d333badb2a6dfab4854c5a30ac2dbb9db9f,RestrictedWrite,Violation,"[234.0, 1926.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1926.0, 234.0]",3.0
+securify,0xcd820a2f792f429bf95e6d0de909d06110b44123,TimestampDepend,Safety,"[158.0, 205.0, 344.0, 392.0]",4.0,horstify,[158.0],1.0
+securify,0x422f8015c5d8168edee923749701360a8a4d0703,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 763.0, 799.0, 813.0, 830.0]",9.0,horstify,"[624.0, 707.0, 549.0, 613.0]",4.0
+securify,0x9da7902394fb19ddd340d47398d35e3405bf79ec,RestrictedWrite,Violation,"[501.0, 511.0, 514.0, 594.0, 605.0, 683.0, 720.0, 734.0, 742.0, 750.0, 811.0, 820.0, 843.0, 899.0]",14.0,horstify,"[514.0, 594.0, 501.0, 683.0, 605.0, 511.0]",6.0
+securify,0x60a9be0ddd559e05733f22101c9330e7fc5282de,TimestampDepend,Safety,"[162.0, 316.0, 363.0, 609.0]",4.0,horstify,[162.0],1.0
+securify,0xe3B6638F0C1C0FA37282FAb6eF9457e457A1E9a8,TimestampDepend,Safety,"[408.0, 1425.0, 787.0, 1054.0]",4.0,horstify,"[1425.0, 408.0]",2.0
+securify,0xf53E7f01371C6fc0E1c821d3c3C8b30Be366BB6E,TimestampDepend,Safety,"[962.0, 1030.0, 1211.0]",3.0,horstify,"[962.0, 1211.0]",2.0
+securify,0xba69e7c96e9541863f009e713caf26d4ad2241a0,TimestampDepend,Safety,[1207.0],1.0,horstify,[],0.0
+securify,0xD05d56acd892F33010D93DdF6D9593511B618946,TimestampDepend,Safety,"[172.0, 514.0, 597.0, 680.0]",4.0,horstify,"[514.0, 172.0]",1.0
+securify,0xD05d56acd892F33010D93DdF6D9593511B618946,RestrictedWrite,Violation,"[252.0, 259.0]",2.0,horstify,[259.0],1.0
+securify,0x5158cf97c3e001b402ccb0f9063736ee8d6dad5a,RestrictedWrite,Violation,"[542.0, 574.0, 638.0, 649.0, 732.0, 769.0, 789.0, 801.0, 818.0]",9.0,horstify,"[649.0, 732.0, 574.0, 638.0, 542.0]",5.0
+securify,0xa7481af3bbc9d902c02f58204c5683052de53330,RestrictedWrite,Violation,"[578.0, 655.0, 666.0, 762.0, 799.0, 816.0, 824.0, 841.0]",8.0,horstify,"[578.0, 762.0, 666.0, 655.0]",4.0
+securify,0x5e569e1ecd56fe30dd97ee233ec1675b60fb6680,TimestampDepend,Safety,"[397.0, 450.0, 269.0]",3.0,horstify,"[397.0, 269.0]",2.0
+securify,0x1368e088682b3ea455c4856297365542ca6828d8,TimestampDepend,Safety,"[338.0, 834.0, 937.0]",3.0,horstify,"[338.0, 834.0]",2.0
+securify,0x1368e088682b3ea455c4856297365542ca6828d8,RestrictedWrite,Violation,"[387.0, 445.0, 662.0, 780.0, 793.0, 948.0, 530.0, 628.0, 637.0, 768.0]",10.0,horstify,[387.0],1.0
+securify,0xade85d1796008281dbf4baaedb2790d3fea8d89d,TimestampDepend,Safety,"[951.0, 1849.0]",2.0,horstify,[951.0],1.0
+securify,0x3ab274f835d1939d20d0bbb72a1fb513d7a7a675,TimestampDepend,Safety,"[816.0, 939.0]",2.0,horstify,[816.0],1.0
+securify,0x3ab274f835d1939d20d0bbb72a1fb513d7a7a675,RestrictedWrite,Violation,"[375.0, 433.0, 547.0, 753.0, 758.0, 767.0, 950.0, 515.0, 524.0, 658.0, 667.0]",11.0,horstify,[375.0],1.0
+securify,0xad2b1feb2153cd5a6b8a5f37a820ba013a89cabf,TimestampDepend,Safety,"[596.0, 677.0]",2.0,horstify,[],0.0
+securify,0x316201f586706aaa2795bc2a3f0bad2379c363e4,RestrictedWrite,Violation,"[459.0, 469.0, 472.0, 552.0, 563.0, 641.0, 678.0, 692.0, 700.0, 708.0, 769.0, 778.0, 801.0, 815.0]",14.0,horstify,"[641.0, 563.0, 469.0, 552.0, 472.0, 459.0]",6.0
+securify,0xd59a6b2dbec8bb0e2b84f4c1bfaaed72c1f19ff0,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x5f0281910af44bfb5fc7e86a404d0304b0e042f1,TimestampDepend,Safety,"[1032.0, 3962.0, 1838.0, 1927.0, 2104.0, 2278.0, 2366.0, 2839.0, 3666.0, 3742.0, 3861.0]",11.0,horstify,[],0.0
+securify,0x56fedaf633393a4902078b95a4de01c6185c5975,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x73e25c92d1669af02142f556c1918a1de537ba0e,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xe2e4d0d3410cd3e81bfcb7dad364dd168bb499f3,TimestampDepend,Safety,"[437.0, 620.0, 906.0, 1500.0, 1607.0, 2206.0, 1822.0]",7.0,horstify,"[437.0, 906.0, 620.0, 1500.0, 2206.0, 1822.0]",6.0
+securify,0xa1ea522792ed4f092bf81c10865cb81299e46679,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e,TimestampDepend,Safety,"[1057.0, 1136.0, 1394.0, 2812.0]",4.0,horstify,"[1136.0, 1057.0, 2812.0]",3.0
+securify,0xa9d160e32ad37ac6f2b8231e4efe14d35abb576e,RestrictedWrite,Violation,"[1176.0, 1422.0, 1442.0, 1530.0, 1560.0, 1784.0, 1871.0, 1647.0, 1658.0, 1884.0, 1921.0, 1621.0, 1967.0, 1998.0, 2014.0, 2107.0, 2300.0, 2313.0, 2336.0]",19.0,horstify,"[2336.0, 1442.0, 1176.0, 2313.0, 2107.0, 2300.0, 1422.0]",7.0
+securify,0x258d778e4771893758dfd3e7dd1678229320eeb5,TimestampDepend,Safety,"[770.0, 891.0]",2.0,horstify,[770.0],1.0
+securify,0x258d778e4771893758dfd3e7dd1678229320eeb5,RestrictedWrite,Violation,"[332.0, 390.0, 496.0, 719.0, 472.0, 729.0, 902.0, 607.0, 688.0, 697.0]",10.0,horstify,[332.0],1.0
+securify,0xc78daa292c7f44dcbf138db81dc25272138f5aaf,TimestampDepend,Safety,"[531.0, 926.0, 1074.0, 1163.0, 1763.0, 2455.0, 2203.0, 1320.0, 2555.0]",9.0,horstify,"[1074.0, 531.0, 926.0]",3.0
+securify,0x275498d1fb7ffb5b521f89b23c84224af9f96ea6,TimestampDepend,Safety,"[814.0, 904.0]",2.0,horstify,[814.0],1.0
+securify,0x275498d1fb7ffb5b521f89b23c84224af9f96ea6,RestrictedWrite,Violation,"[370.0, 426.0, 642.0, 760.0, 773.0, 915.0, 511.0, 609.0, 618.0, 748.0]",10.0,horstify,[370.0],1.0
+securify,0x8d7b6fb1523f04e644085e14d5e49b1c6278c92e,TimestampDepend,Safety,"[701.0, 647.0, 350.0, 422.0, 510.0]",5.0,horstify,"[647.0, 701.0]",2.0
+securify,0x5d951e9377ec3383808d842fb37182c1363ca34b,TimestampDepend,Safety,"[315.0, 424.0, 664.0, 879.0, 971.0, 768.0]",6.0,horstify,[315.0],1.0
+securify,0xbf9dd0174741283fdb6e581e9f9ff770bcafd604,RestrictedWrite,Violation,"[142.0, 195.0, 233.0, 359.0, 440.0]",5.0,horstify,[],0.0
+securify,0x27c3defefe0b978e0a3d1a393eca34b60e25e964,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x17f8e4bd5a79f095d7b680317de6a617d202b235,TimestampDepend,Safety,"[297.0, 428.0, 521.0, 610.0, 840.0, 929.0, 1176.0, 1265.0, 1458.0, 1648.0, 1824.0, 1910.0, 2144.0, 2275.0, 2368.0, 2457.0, 2654.0, 2765.0, 2888.0, 3081.0, 3171.0, 3260.0]",22.0,horstify,"[1824.0, 1648.0, 1458.0, 1176.0, 840.0, 3081.0, 2654.0]",7.0
+securify,0x755cdba6ae4f479f7164792b318b2a06c759833b,TimestampDepend,Safety,"[197.0, 335.0, 382.0, 532.0]",4.0,horstify,"[532.0, 197.0]",2.0
+securify,0x693399aae96a88b966b05394774cfb7b880355b4,RestrictedWrite,Violation,"[2060.0, 2125.0, 2144.0]",3.0,horstify,"[2144.0, 2060.0]",2.0
+securify,0x3cf853facae392c3e4310ab805da30a1da508609,RestrictedWrite,Violation,"[234.0, 1925.0, 1396.0, 1349.0]",4.0,horstify,"[1396.0, 1925.0, 234.0]",3.0
+securify,0x3aaaf1c542b365e47f13ab62497f020eee45f747,TimestampDepend,Safety,[435.0],1.0,horstify,[],0.0
+securify,0xfcaf204852781b57c23023aa28f21437f7303505,TimestampDepend,Safety,"[822.0, 890.0, 1002.0]",3.0,horstify,"[822.0, 1002.0]",2.0
+securify,0xc0326a98c23296d295ad880b59a3ef7ea6f5e594,RestrictedWrite,Violation,"[642.0, 700.0, 707.0, 714.0, 721.0, 729.0, 764.0, 1071.0, 1269.0, 1322.0, 1368.0, 1430.0, 1497.0, 1543.0, 1793.0, 1803.0, 1842.0, 1902.0, 1958.0, 2058.0, 2097.0, 2158.0, 2216.0, 2302.0]",24.0,horstify,"[1793.0, 642.0, 707.0, 1958.0, 2216.0, 714.0, 1322.0, 2058.0, 1803.0, 2158.0, 1902.0, 1071.0, 721.0, 2097.0, 1842.0, 1269.0, 729.0, 764.0, 700.0, 2302.0]",20.0
+securify,0x09515Cb5e3aCaEf239Ab83d78B2F3e3764FcaB9B,TimestampDepend,Safety,"[338.0, 834.0, 938.0]",3.0,horstify,"[338.0, 834.0]",2.0
+securify,0x09515Cb5e3aCaEf239Ab83d78B2F3e3764FcaB9B,RestrictedWrite,Violation,"[387.0, 445.0, 662.0, 780.0, 793.0, 949.0, 530.0, 628.0, 637.0, 768.0]",10.0,horstify,[387.0],1.0
+securify,0x98a31890002355fbe5231c60db4b1b6c28f45e90,TimestampDepend,Safety,"[300.0, 354.0, 397.0, 444.0, 496.0]",5.0,horstify,[300.0],1.0
+securify,0x4229a873bbd207deef8f41e807e563c26033d118,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 763.0, 799.0, 813.0, 830.0]",9.0,horstify,"[624.0, 707.0, 549.0, 613.0]",4.0
+securify,0xe1388626C8dE5Fd7E5683A83d8da6a34153e9B18,TimestampDepend,Safety,"[800.0, 908.0]",2.0,horstify,[800.0],1.0
+securify,0xe1388626C8dE5Fd7E5683A83d8da6a34153e9B18,RestrictedWrite,Violation,"[367.0, 425.0, 539.0, 745.0, 750.0, 759.0, 919.0, 507.0, 516.0, 650.0, 659.0]",11.0,horstify,[367.0],1.0
+securify,0xd2f7bba33a3b81792c0f9cc2de6d9266002a5591,TimestampDepend,Safety,"[501.0, 353.0, 641.0, 798.0, 962.0]",5.0,horstify,"[353.0, 962.0, 501.0, 798.0]",4.0
+securify,0xe98e873ad9665690538cbdf4a4a21a3f286e9028,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xfeeb8a968f0d7fd58e29fbfc525051f50ee2fedc,TimestampDepend,Safety,"[275.0, 378.0, 961.0, 1042.0]",4.0,horstify,[378.0],1.0
+securify,0xba95b83766d60170e78398745f5c3df78b886c65,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xC33281d43BD23b6F8Ec8880C663D7603B85cb383,RestrictedWrite,Violation,"[64.0, 122.0, 136.0, 268.0, 274.0, 484.0, 448.0, 632.0, 685.0, 730.0, 473.0]",11.0,horstify,[],0.0
+securify,0x38118c5ab0cc580678797b975b877e937310bd8c,RestrictedWrite,Violation,"[342.0, 364.0, 463.0, 212.0, 561.0]",5.0,horstify,"[342.0, 364.0]",2.0
+securify,0x4a56ebd89b2750bf42ddec1cd3845938983be0d2,TimestampDepend,Safety,"[473.0, 694.0]",2.0,horstify,[],0.0
+securify,0xaed5a41450b38fc0ea0f6f203a985653fe187d9c,TimestampDepend,Safety,[358.0],1.0,horstify,[],0.0
+securify,0xee2157c15a43be80faac64801ed89c8d8e2c4d3a,TimestampDepend,Safety,"[2161.0, 2713.0, 2361.0, 3013.0, 3084.0, 3283.0, 1381.0]",7.0,horstify,[],0.0
+securify,0x56467e038871dc7f2a6180cdebe1702cef77285f,TimestampDepend,Safety,"[133.0, 352.0, 897.0]",3.0,horstify,"[352.0, 133.0]",2.0
+securify,0x56467e038871dc7f2a6180cdebe1702cef77285f,RestrictedWrite,Violation,"[383.0, 441.0, 547.0, 770.0, 523.0, 780.0, 908.0, 658.0, 739.0, 748.0]",10.0,horstify,[383.0],1.0
+securify,0xc58d783e39aabe61a4bce8d4b5e7264e67c92c27,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xdb6d68e1d8c3f69d32e2d83065492e502b4c67ba,RestrictedWrite,Violation,"[628.0, 705.0, 714.0]",3.0,horstify,[],0.0
+securify,0xC357a046C5C13bb4e6d918a208b8B4A0aB2F2EFd,RestrictedWrite,Violation,"[456.0, 459.0, 538.0, 549.0, 882.0, 928.0, 937.0, 945.0, 1217.0, 1266.0, 1299.0]",11.0,horstify,"[882.0, 549.0, 456.0, 538.0, 459.0]",5.0
+securify,0x15870addc0635dc3c99ba6a37c23e8f8f77d9898,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x2071f61de93ca756f83264a7f4a661ca0383742e,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x9053d234a1ff2290f087a1ca9460e3263121e580,TimestampDepend,Safety,"[272.0, 340.0]",2.0,horstify,"[340.0, 272.0]",1.0
+securify,0xF1c1648f6F0EdbCF7d898441b88E489CfaAce11D,RestrictedWrite,Violation,"[368.0, 379.0, 445.0, 452.0, 625.0, 679.0, 693.0]",7.0,horstify,"[368.0, 625.0, 452.0, 379.0, 445.0]",5.0
+securify,0xb6Db69e99f7E3ccB352FaBde7D98A8FAe0De4297,TimestampDepend,Safety,"[170.0, 353.0, 518.0, 581.0, 709.0]",5.0,horstify,[],0.0
+securify,0xbf04a03a4ad0455b450888099eb43a1780feb10d,TimestampDepend,Safety,[155.0],1.0,horstify,[155.0],0.0
+securify,0x1654d540616bfb3f13973ed6019e43005be43219,RestrictedWrite,Violation,"[2081.0, 2146.0, 2165.0]",3.0,horstify,"[2081.0, 2165.0]",2.0
+securify,0x33720000b3b3bd4b631b76f85049306be257ddc7,TimestampDepend,Safety,"[302.0, 659.0, 2202.0]",3.0,horstify,[2202.0],1.0
+securify,0xc13e4ed5e7f8af83663c9e5086de85b1f914a863,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x41F2d5040726C5328f8366F17041ec012aC8f338,TimestampDepend,Safety,"[279.0, 445.0, 1580.0, 2766.0, 2061.0]",5.0,horstify,"[279.0, 1580.0, 2061.0]",3.0
+securify,0x6e7f987907320630b7880Eecc26B17C0D9afa7b4,TimestampDepend,Safety,"[411.0, 680.0, 547.0]",3.0,horstify,"[680.0, 411.0]",2.0
+securify,0xd3938e46a27a7402f5d6421da298463a73f069c7,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xfD2487cc0e5dCe97F08BE1Bc8eF1DCE8D5988B4D,RestrictedWrite,Violation,"[494.0, 566.0, 577.0, 642.0, 679.0, 702.0, 711.0, 728.0]",8.0,horstify,"[577.0, 642.0, 566.0, 494.0]",4.0
+securify,0x3c087f2684706b78a1c558e26e2735a4f8ddbb2a,TimestampDepend,Safety,"[1450.0, 1517.0, 1699.0]",3.0,horstify,"[1699.0, 1450.0]",2.0
+securify,0x3c087f2684706b78a1c558e26e2735a4f8ddbb2a,RestrictedWrite,Violation,"[504.0, 551.0]",2.0,horstify,[],0.0
+securify,0x80D9C4F6209044De069c545f68644419b520a02F,RestrictedWrite,Violation,"[546.0, 610.0, 621.0, 704.0, 741.0, 760.0, 796.0, 810.0, 827.0]",9.0,horstify,"[704.0, 546.0, 610.0, 621.0]",4.0
+securify,0x4865e85c72a27ca6c362da75ba6707c07464b953,RestrictedWrite,Violation,"[513.0, 523.0, 526.0, 593.0, 604.0, 669.0, 706.0, 715.0, 723.0, 731.0, 793.0, 802.0]",12.0,horstify,"[513.0, 593.0, 523.0, 604.0, 669.0, 526.0]",6.0
+securify,0xa502f8112b2491718855f01a01a60462cc97a0d5,RestrictedWrite,Violation,"[497.0, 561.0, 572.0, 637.0, 674.0, 697.0, 706.0, 723.0]",8.0,horstify,"[561.0, 497.0, 572.0, 637.0]",4.0
+securify,0x37b53b46fa74ac3f9b4340dc5a39aabb0f2afa33,RestrictedWrite,Violation,"[542.0, 606.0, 617.0, 700.0, 737.0, 756.0, 792.0, 806.0, 823.0]",9.0,horstify,"[617.0, 700.0, 542.0, 606.0]",4.0
+securify,0x6b80a8c7958e25a7ab14e4dd68257d7566c487eb,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x98a86b076c19a65d928417b8b1398ac19e2df04c,TimestampDepend,Safety,"[470.0, 622.0, 737.0, 807.0, 940.0, 1013.0]",6.0,horstify,"[470.0, 807.0, 940.0, 622.0]",4.0
+securify,0x98a86b076c19a65d928417b8b1398ac19e2df04c,RestrictedWrite,Violation,"[764.0, 1040.0]",2.0,horstify,[1040.0],1.0
+securify,0x69e5da6904f73dfa845648e1991ad1dcc780f874,TimestampDepend,Safety,"[496.0, 637.0]",2.0,horstify,[496.0],1.0
+securify,0x49f053b866c33185fa1151e71fc80d5fe6b08a92,RestrictedWrite,Violation,"[974.0, 1049.0, 1055.0, 1126.0, 1169.0, 1187.0]",6.0,horstify,"[1126.0, 1049.0, 974.0, 1055.0]",4.0
+securify,0x5ee82a5250ac20f0bbe2f55cde273937461c882f,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x160fc84c8c5d46561b01d38eb7d44671f3eed4ca,TimestampDepend,Safety,"[203.0, 239.0]",2.0,horstify,[203.0],1.0
+securify,0x4c24fd04063e8b1c881e5ec0f46208d66d010c64,RestrictedWrite,Violation,"[993.0, 1053.0, 1070.0]",3.0,horstify,"[993.0, 1070.0]",2.0
+securify,0xe4C1c33ed635263c61bF61dB751b8A74ee3AF0e4,RestrictedWrite,Violation,"[436.0, 439.0, 518.0, 529.0, 889.0, 950.0, 962.0, 974.0, 979.0, 1050.0, 1223.0, 1236.0, 1325.0, 1331.0, 1454.0, 1538.0, 1661.0, 1745.0, 1780.0]",19.0,horstify,"[529.0, 436.0, 518.0, 439.0]",4.0
+securify,0x4668cd871eba35997e1fbe66d0eddf6612d018ce,RestrictedWrite,Violation,"[546.0, 610.0, 621.0, 704.0, 741.0, 760.0, 796.0, 810.0, 827.0]",9.0,horstify,"[704.0, 546.0, 610.0, 621.0]",4.0
+securify,0x26C4E381FfbDc825Be9B986c3BA40525f0771E8d,TimestampDepend,Safety,"[686.0, 1015.0, 1237.0, 1483.0]",4.0,horstify,[686.0],1.0
+securify,0xaBbb6bEbFA05aA13e908EaA492Bd7a8343760477,TimestampDepend,Safety,"[158.0, 204.0, 343.0, 390.0]",4.0,horstify,[158.0],1.0
+securify,0x78b058ccda93816487C655367dCb79664A216AD2,TimestampDepend,Safety,"[949.0, 1063.0, 1147.0, 1377.0]",4.0,horstify,"[949.0, 1063.0, 1147.0]",3.0
+securify,0x78b058ccda93816487C655367dCb79664A216AD2,RestrictedWrite,Violation,"[525.0, 535.0, 538.0, 603.0, 614.0, 777.0, 832.0, 840.0, 856.0, 877.0, 891.0, 960.0, 1074.0, 1077.0, 1161.0, 1167.0]",16.0,horstify,"[614.0, 535.0, 777.0, 538.0, 603.0, 525.0]",6.0
+securify,0x609a9cb68b0a3a9c63027bfac0708517bac97885,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x87b0de512502f3e86fd22654b72a640c8e0f59cc,TimestampDepend,Safety,"[291.0, 382.0, 474.0, 710.0, 801.0, 894.0, 523.0, 945.0]",8.0,horstify,"[291.0, 710.0]",2.0
+securify,0x936f78b9852d12f5cb93177c1f84fb8513d06263,TimestampDepend,Safety,"[674.0, 1129.0, 1562.0, 1673.0, 2146.0]",5.0,horstify,"[2146.0, 1129.0, 1562.0, 674.0]",3.0
+securify,0xf767fca8e65d03fe16d4e38810f5e5376c3372a8,TimestampDepend,Safety,"[157.0, 376.0, 1680.0, 1419.0, 1558.0, 2275.0, 2667.0]",7.0,horstify,"[1558.0, 376.0, 1419.0, 157.0]",4.0
+securify,0xab7689c7be6d9b5428d6bf4c536dc699fc919260,RestrictedWrite,Violation,"[494.0, 552.0, 634.0, 649.0, 664.0, 717.0, 838.0, 848.0]",8.0,horstify,"[552.0, 664.0, 649.0, 634.0, 494.0]",5.0
+securify,0x440dec42eb7a9950b6f79018ffa1083595b65ee0,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0xe120100349a0b1BF826D2407E519D75C2Fe8f859,RestrictedWrite,Violation,"[154.0, 464.0, 503.0, 235.0]",4.0,horstify,[],0.0
+securify,0x4fd997ed7c10dbd04e95d3730cd77d79513076f2,RestrictedWrite,Violation,"[234.0, 1934.0, 1404.0, 1357.0]",4.0,horstify,"[234.0, 1404.0, 1934.0]",3.0
+securify,0xb94f85ea35987648bb460a96a34f56ac1a6cc6f7,TimestampDepend,Safety,"[1478.0, 1545.0, 1666.0]",3.0,horstify,"[1666.0, 1478.0]",2.0
+securify,0xb94f85ea35987648bb460a96a34f56ac1a6cc6f7,RestrictedWrite,Violation,"[504.0, 551.0]",2.0,horstify,[],0.0
+securify,0xD35e6F3B26F8992a7F023Ad878e13A82ddEd2232,TimestampDepend,Safety,"[283.0, 308.0, 459.0]",3.0,horstify,[283.0],1.0
+securify,0x1aFd952269873FE009C7BDFF5f07Fd91605a7227,RestrictedWrite,Violation,"[539.0, 603.0, 614.0, 697.0, 734.0, 753.0, 789.0, 803.0, 820.0]",9.0,horstify,"[614.0, 697.0, 539.0, 603.0]",4.0
+securify,0x62ca898dd70d4ad44552f9a9027ee45bd7a47ce0,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xfE3672Eff595CfD36eD05aaf4622d1Aec3B5E852,RestrictedWrite,Violation,"[316.0, 380.0, 391.0, 563.0, 600.0, 615.0, 651.0, 666.0, 679.0]",9.0,horstify,"[563.0, 391.0, 316.0, 380.0]",4.0
+securify,0x1f0b9Db5bb0F2a60F8C8824CEc738C15805dBDec,TimestampDepend,Safety,"[712.0, 780.0, 928.0]",3.0,horstify,"[928.0, 712.0]",2.0
+securify,0x30b82a61e9c7ecca057f8dd42e67c628d7e1b823,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x3398080b81a1cff1429af347ce2b17fc28de3937,TimestampDepend,Safety,"[221.0, 309.0, 397.0, 485.0, 573.0, 661.0, 877.0, 1069.0]",8.0,horstify,[877.0],0.0
+securify,0x3398080b81a1cff1429af347ce2b17fc28de3937,RestrictedWrite,Violation,"[994.0, 1177.0]",2.0,horstify,[994.0],1.0
+securify,0x3eab9a2fa76f16cdc46e707ff928f7995886dee0,TimestampDepend,Safety,"[4220.0, 4294.0, 4576.0, 400.0, 760.0, 1062.0]",6.0,horstify,"[400.0, 4576.0, 1062.0, 760.0, 4220.0]",5.0
+securify,0xAF6D36e6A376CDa44a5Ce9280507e5E24132C143,TimestampDepend,Safety,"[339.0, 1847.0, 3180.0, 3424.0, 1954.0, 1471.0, 2085.0]",7.0,horstify,"[3424.0, 339.0, 1847.0, 3180.0, 1471.0]",5.0
+securify,0xa850E6f693B9bCB31df3eE44e7888EF19E608107,TimestampDepend,Safety,[660.0],1.0,horstify,[],0.0
+securify,0xa850E6f693B9bCB31df3eE44e7888EF19E608107,RestrictedWrite,Violation,"[242.0, 317.0, 323.0, 394.0, 445.0]",5.0,horstify,"[242.0, 323.0, 394.0, 317.0]",4.0
+securify,0x9aa7889526708afdfb6c5222e47ed96bfdacb945,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x9f1d916a456b96146e9f0dbbd0e107a1f389a061,TimestampDepend,Safety,"[559.0, 1006.0, 1080.0, 1119.0]",4.0,horstify,[559.0],1.0
+securify,0x9f1d916a456b96146e9f0dbbd0e107a1f389a061,RestrictedWrite,Violation,"[459.0, 590.0, 651.0, 662.0, 750.0, 757.0, 775.0, 789.0]",8.0,horstify,[459.0],1.0
+securify,0xe7f4f5abba4a0ae18eaa31796876d137e19b93ad,TimestampDepend,Safety,[144.0],1.0,horstify,[],0.0
+securify,0xe7f4f5abba4a0ae18eaa31796876d137e19b93ad,RestrictedWrite,Violation,"[278.0, 303.0]",2.0,horstify,[],0.0
+securify,0xa379bbdd0af814502eb9b38d475c7fa7411bb4ec,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 763.0, 799.0, 813.0, 830.0]",9.0,horstify,"[624.0, 707.0, 549.0, 613.0]",4.0
+securify,0x9d3899df1d9f030a32dd5571fe3c7ef72d6ae566,TimestampDepend,Safety,"[319.0, 865.0]",2.0,horstify,[319.0],1.0
+securify,0x9d3899df1d9f030a32dd5571fe3c7ef72d6ae566,RestrictedWrite,Violation,"[350.0, 408.0, 514.0, 737.0, 490.0, 747.0, 876.0, 625.0, 706.0, 715.0]",10.0,horstify,[350.0],1.0
+securify,0x8f058d8a161f5be34b47149d70c47d6c60252eee,TimestampDepend,Safety,"[254.0, 324.0, 471.0, 542.0]",4.0,horstify,[254.0],1.0
+securify,0x0b983fa1bcbdf24bdbfacb660faa76c586a16c64,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0x0e0e733dd24168d85ecb5a62bb13385d31edf761,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xeae6c55570afcec8fff6dfe866dd142369b87251,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x50cb0011a52a8415deae370301d78369e6089fa2,TimestampDepend,Safety,"[121.0, 194.0]",2.0,horstify,[194.0],1.0
+securify,0x0f26c26318872e8fa85dee5d30cba45ed53b3d3e,RestrictedWrite,Violation,"[541.0, 605.0, 616.0, 699.0, 736.0, 781.0, 790.0, 807.0]",8.0,horstify,"[616.0, 699.0, 605.0, 541.0]",4.0
+securify,0xfba6ae30dfe97b20ad9ecccd5057ab3e5a1c41fa,TimestampDepend,Safety,"[133.0, 352.0, 898.0]",3.0,horstify,"[352.0, 133.0]",2.0
+securify,0xfba6ae30dfe97b20ad9ecccd5057ab3e5a1c41fa,RestrictedWrite,Violation,"[383.0, 441.0, 547.0, 770.0, 523.0, 780.0, 909.0, 658.0, 739.0, 748.0]",10.0,horstify,[383.0],1.0
+securify,0xeacba276ff97853102c3d540b663c08ec7fbe0ed,RestrictedWrite,Violation,"[642.0, 706.0, 717.0, 800.0, 837.0, 857.0, 869.0, 886.0]",8.0,horstify,"[800.0, 706.0, 642.0, 717.0]",4.0
+securify,0x9674e9123caf1f74d7f2b8c6823734891c0573d7,TimestampDepend,Safety,"[328.0, 406.0, 533.0]",3.0,horstify,"[533.0, 328.0]",2.0
+securify,0x64160ad5ff632457cd3dc8788ee83e97e3a88abb,TimestampDepend,Safety,"[217.0, 390.0, 586.0, 958.0, 1003.0]",5.0,horstify,"[217.0, 958.0]",2.0
+securify,0x5088c2985210925d15ea470a160fc08b352818d0,TimestampDepend,Safety,"[917.0, 1074.0, 1117.0, 295.0]",4.0,horstify,"[1074.0, 917.0, 295.0]",3.0
+securify,0x5088c2985210925d15ea470a160fc08b352818d0,RestrictedWrite,Violation,"[416.0, 369.0]",2.0,horstify,[416.0],1.0
+securify,0xba3e14a7f0169d86fc1389ad40ca4356a1404640,TimestampDepend,Safety,"[373.0, 499.0, 885.0, 1148.0, 1217.0, 1354.0, 1491.0, 1748.0, 1815.0, 1956.0, 2202.0, 2270.0, 2600.0, 2668.0, 2819.0, 3036.0]",16.0,horstify,"[499.0, 2819.0, 1956.0, 1748.0, 373.0, 2600.0, 1354.0, 2202.0, 1148.0]",9.0
+securify,0x43bbc7fafb860d974037b8f7dd06b6f6fe799b3e,TimestampDepend,Safety,[729.0],1.0,horstify,[],0.0
+securify,0x43bbc7fafb860d974037b8f7dd06b6f6fe799b3e,RestrictedWrite,Violation,"[313.0, 388.0, 394.0, 465.0, 514.0]",5.0,horstify,"[465.0, 388.0, 313.0, 394.0]",4.0
+securify,0xb1d58bad78f33892719cdeba218f8641a71a3f05,TimestampDepend,Safety,"[829.0, 934.0]",2.0,horstify,[829.0],1.0
+securify,0xb1d58bad78f33892719cdeba218f8641a71a3f05,RestrictedWrite,Violation,"[374.0, 432.0, 649.0, 767.0, 780.0, 945.0, 517.0, 615.0, 624.0, 755.0]",10.0,horstify,[374.0],1.0
+securify,0x237f29bbFd52C768A02980eA8D4D983a1D234eDC,TimestampDepend,Safety,"[949.0, 1063.0, 1147.0, 1377.0]",4.0,horstify,"[949.0, 1063.0, 1147.0]",3.0
+securify,0x237f29bbFd52C768A02980eA8D4D983a1D234eDC,RestrictedWrite,Violation,"[525.0, 535.0, 538.0, 603.0, 614.0, 777.0, 832.0, 840.0, 856.0, 877.0, 891.0, 960.0, 1074.0, 1077.0, 1161.0, 1167.0]",16.0,horstify,"[614.0, 535.0, 777.0, 538.0, 603.0, 525.0]",6.0
+securify,0x9D5BdAa9d82782c03402dD5c675aE3E45B3102e2,RestrictedWrite,Violation,"[539.0, 603.0, 614.0, 697.0, 734.0, 753.0, 789.0, 802.0, 819.0]",9.0,horstify,"[614.0, 697.0, 603.0, 539.0]",4.0
+securify,0x716b5400f76dfc3420822f710835de8baf105442,TimestampDepend,Safety,"[878.0, 967.0, 1056.0, 1216.0, 1305.0, 1394.0, 1483.0]",7.0,horstify,"[1216.0, 878.0]",2.0
+securify,0x007d42b9192b8C087b0D3E6ef73AAE48E74b41c1,TimestampDepend,Safety,"[268.0, 434.0, 1320.0, 2506.0, 1801.0]",5.0,horstify,"[1320.0, 1801.0, 268.0]",3.0
+securify,0x9c794584b2f482653937b529647924606446e7f4,RestrictedWrite,Violation,"[993.0, 1053.0, 1070.0]",3.0,horstify,"[993.0, 1070.0]",2.0
+securify,0xb78e82956b6037e13b83c287aa9047f748c0f55a,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0xf70ce1be9685b0cfb531bc712d3faace858b5bfb,RestrictedWrite,Violation,"[522.0, 586.0, 597.0, 680.0, 717.0]",5.0,horstify,"[597.0, 680.0, 522.0, 586.0]",4.0
+securify,0x80f84866d4872f1ea412ddf10e2ed7af0b8ca8fb,TimestampDepend,Safety,"[1264.0, 1289.0, 675.0]",3.0,horstify,"[1264.0, 675.0]",2.0
+securify,0xf9735dc96a98f68ac8fe6fccf1e7b9876ddb6b47,RestrictedWrite,Violation,"[420.0, 654.0]",2.0,horstify,[420.0],1.0
+securify,0x7fd6d3537b39842cfe16e813851296d4745b51a7,RestrictedWrite,Violation,"[579.0, 651.0, 662.0, 727.0, 764.0, 781.0, 789.0, 806.0]",8.0,horstify,"[579.0, 662.0, 727.0, 651.0]",4.0
+securify,0x40b88bbd78cb0441259de7a7d608a39b7388369a,RestrictedWrite,Violation,"[661.0, 725.0, 736.0, 820.0, 834.0, 846.0, 968.0, 978.0]",8.0,horstify,"[736.0, 834.0, 820.0, 661.0, 725.0, 846.0]",6.0
+securify,0x4f529990b7f3d1fb4152736155e431c96fd86294,RestrictedWrite,Violation,"[416.0, 369.0]",2.0,horstify,[416.0],1.0
+securify,0xeb45e2f4949cca0d7ad4550106cb4fee09003644,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x31916de2c0c286b687e5788110d04ad97dd37283,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x19a6067538c90973eF5dC31Ded5Fa567f3d09059,RestrictedWrite,Violation,"[502.0, 566.0, 577.0, 642.0, 679.0, 702.0, 711.0, 728.0]",8.0,horstify,"[577.0, 642.0, 566.0, 502.0]",4.0
+securify,0x5d67888188772Df8eD420E5Be43820c9D98A8ef5,TimestampDepend,Safety,"[386.0, 444.0, 695.0, 503.0]",4.0,horstify,[386.0],1.0
+securify,0x9d0135658dd0472310e44bcd520fd0a141db0bbb,TimestampDepend,Safety,"[173.0, 327.0, 374.0, 680.0]",4.0,horstify,[173.0],1.0
+securify,0xbf28e50143ca1f25c7e2887b1d5cd47ec5dccd17,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xe5411ae9c24931e11dffecd84fa50fcf7f0df31b,TimestampDepend,Safety,"[217.0, 390.0, 586.0, 958.0, 1003.0]",5.0,horstify,"[217.0, 958.0]",2.0
+securify,0x02B2101903eB6a51518E63e84B785180859FDa9d,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 766.0, 802.0, 818.0, 835.0]",9.0,horstify,"[624.0, 707.0, 613.0, 549.0]",4.0
+securify,0xf243688304fa4f6c6efadc22b9c1dd009aa76650,RestrictedWrite,Violation,"[546.0, 610.0, 621.0, 704.0, 741.0, 760.0, 796.0, 810.0, 827.0]",9.0,horstify,"[704.0, 546.0, 610.0, 621.0]",4.0
+securify,0x5385d02f3a254ca716c144c7c333553a2e6ec931,TimestampDepend,Safety,[1412.0],1.0,horstify,[],0.0
+securify,0x2bcca955c9200c9a5f888bc2b14b91aaa56cd5c5,TimestampDepend,Safety,"[174.0, 1523.0, 1630.0, 1683.0, 1786.0, 1143.0, 1250.0, 1303.0, 1427.0, 445.0, 700.0, 973.0, 1013.0]",13.0,horstify,[],0.0
+securify,0x7d3ae940eb73dc9131758ad2e326c7d863b0916a,RestrictedWrite,Violation,"[368.0, 379.0, 445.0, 452.0, 625.0, 683.0, 694.0]",7.0,horstify,"[368.0, 625.0, 452.0, 379.0, 445.0]",5.0
+securify,0x6cafdc06177f6f4b4b4638c987397b07cd948aed,TimestampDepend,Safety,"[1660.0, 1029.0, 1086.0, 1172.0, 1322.0, 1408.0]",6.0,horstify,"[1029.0, 1660.0]",2.0
+securify,0xca7c390f8f843a8c3036841fde755e5d0acb97da,RestrictedWrite,Violation,"[642.0, 706.0, 717.0, 800.0, 837.0, 857.0, 869.0, 886.0]",8.0,horstify,"[800.0, 706.0, 642.0, 717.0]",4.0
+securify,0x8b807cf49ca593c4678811211df2992e64f2f3ef,RestrictedWrite,Violation,"[253.0, 2407.0, 1620.0, 1522.0]",4.0,horstify,"[1620.0, 2407.0, 253.0]",3.0
+securify,0xde5ebd0b8879b0a42b23b37e4d76a5e21a0bef4b,TimestampDepend,Safety,"[451.0, 610.0, 699.0, 816.0]",4.0,horstify,[610.0],1.0
+securify,0x788c964f356086b9578b8b4f0fffe13a96c0c7b8,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x826a490c2d5d7ccb5f0223b042b39a9dc3cfdfe6,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0xab7c49a95ba2f8c1ad95d18c8541cba650870618,TimestampDepend,Safety,"[917.0, 1074.0, 1117.0, 295.0]",4.0,horstify,"[1074.0, 917.0, 295.0]",3.0
+securify,0xab7c49a95ba2f8c1ad95d18c8541cba650870618,RestrictedWrite,Violation,"[416.0, 369.0]",2.0,horstify,[416.0],1.0
+securify,0xD361e374bE9e3907FCEAC60c6EA5CbDcE89fC9ae,RestrictedWrite,Violation,"[574.0, 630.0, 713.0, 763.0, 767.0, 780.0, 914.0, 543.0, 558.0]",9.0,horstify,"[630.0, 713.0, 763.0, 780.0, 574.0, 767.0]",6.0
+securify,0x022de2e28a61f9d197f8966dd0fc8f7ddf70f2dc,RestrictedWrite,Violation,"[205.0, 1717.0, 1272.0, 1225.0]",4.0,horstify,"[1717.0, 1272.0, 205.0]",3.0
+securify,0x1cb0c1cba5193ec5e0303d46a83a7109629046b6,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x1c3e274a4ecf4fc0afdefbe53bd1d36f63c7124a,TimestampDepend,Safety,"[163.0, 240.0, 290.0, 377.0, 492.0, 539.0]",6.0,horstify,"[163.0, 377.0]",2.0
+securify,0x1492cdd605d91658f228eab14d8444b60e6da8df,RestrictedWrite,Violation,"[549.0, 613.0, 624.0, 707.0, 744.0, 766.0, 802.0, 818.0, 835.0]",9.0,horstify,"[624.0, 707.0, 613.0, 549.0]",4.0
+securify,0xfe9c69945687539fabbf531133838d9cce522a76,RestrictedWrite,Violation,"[621.0, 685.0, 696.0, 761.0, 798.0, 815.0, 823.0, 840.0]",8.0,horstify,"[696.0, 761.0, 685.0, 621.0]",4.0
+securify,0xa0c1b6f1d8bc69bcffca759d59354c2cc4fb9db6,TimestampDepend,Safety,"[171.0, 248.0, 298.0, 385.0, 500.0, 547.0]",6.0,horstify,"[385.0, 171.0]",2.0
+securify,0x86ca39d10dacdf1cfe490eb984bf0e7c17d1ed37,RestrictedWrite,Violation,"[505.0, 593.0]",2.0,horstify,[],0.0

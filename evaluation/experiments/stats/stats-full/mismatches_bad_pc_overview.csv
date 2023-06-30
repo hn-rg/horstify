@@ -1,0 +1,5 @@
+contract,type,property,mismatches,tool_1,matches_1,count_1,tool_2,matches_2,count_2
+0x02e01e9a73ed2cb24b32628c935256e455b0a078,Violation,RestrictedWrite,[365.0],securify,[],0.0,horstify,[365.0],1.0
+0x2f81a082e11ee3ab3b063bb9605affc8e3121926,Violation,RestrictedWrite,[771.0],securify,[],0.0,horstify,[771.0],1.0
+0x4eecf99d543b278106ac0c0e8ffe616f2137f10a,Violation,RestrictedWrite,[582.0],securify,[785.0],1.0,horstify,"[785.0, 582.0]",2.0
+0x5be9887d5b4336cb762a9d73335991a6ff8ce981,Violation,RestrictedWrite,[400.0],securify,"[199.0, 944.0, 2182.0, 2337.0, 2425.0, 2629.0, 2666.0]",7.0,horstify,"[400.0, 2337.0, 2629.0, 2182.0, 2425.0, 2666.0]",6.0

@@ -1,0 +1,3 @@
+Tool,Total Number of Contracts,Errors,Timeouts,Avg Total Time,Avg Souffle Time,Avg Total Time(Intersection),Avg Souffle Time(Intersection)
+securify,720,34,30,3106.5823170731705,285.4771341463415,2143.7981072555203,184.0520504731861
+horstify,720,34,46,7055.19375,2251.64375,6813.995268138801,2115.2665615141955

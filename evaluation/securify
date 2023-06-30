@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+java -jar executables/securify.jar "$@"

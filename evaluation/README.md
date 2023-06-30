@@ -1,0 +1,1 @@
+The results of the final experiments used in the paper can be found in experiments/stats/stat-full-correct-timeout/ and have been computed from the plain result data in experiments/contact-results/results-securify-ethor-full-correct-timeout (Securify data) and experiments/contract-results/results-horstify-ethor-full/  (HoRStify data) using the script compute-stats.py

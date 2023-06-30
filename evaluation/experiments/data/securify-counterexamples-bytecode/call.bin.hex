@@ -1,0 +1,26 @@
+contract SaveAddr {
+    address addr = address(0);
+
+    function set(address a) public {
+        addr = a;
+    }
+
+    function get( ) public returns (address) {return addr; }
+}
+
+contract Test {
+    bool test = false;
+    SaveAddr c = SaveAddr (address(42));
+
+    function flip () public {
+        try c.set(msg.sender) {
+            try c.get() returns (address a)  {
+                if (a != address(0)){
+                    test = !test;
+                }
+            }
+            catch {return; }
+        }
+        catch {return; }
+    }
+}
